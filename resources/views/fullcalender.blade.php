@@ -21,7 +21,7 @@
         }
 
         .container {
-            background-color: #fff;
+            background-color: rgba(49, 22, 0, 0.8);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 20px;
             border-radius: 10px;
@@ -32,7 +32,7 @@
 
         h1 {
             font-size: 2.5rem;
-            color: #007bff;
+            color: #582900;
             text-align: center;
             margin-bottom: 30px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -43,7 +43,8 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             overflow: hidden;
-            background-color: #fff;
+            background-color: rgba(255, 145, 0, 0.5);
+            color: #fff;
             padding: 15px;
         }
 
@@ -53,8 +54,16 @@
             border: none;
         }
 
+        .close {
+            color: #fff;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
         .modal-header {
-            background-color: #007bff;
+            background-color: #582900;
             color: #fff;
             border-bottom: none;
             border-top-left-radius: 8px;
@@ -74,14 +83,24 @@
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+            background-color: #291a00;
+            border-color: #291a00;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .btn-primary:active {
+            background-color: #582900 !important;
+            border-color: #582900 !important;
+            box-shadow: 0 0 0 .2rem rgba(43, 21, 0, 0.5) !important;
+        }
+
+        .btn-primary:focus {
+            box-shadow: 0 0 0 .2rem rgba(43, 21, 0, 0.5) !important;
+        }
+
         .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #291a00;
+            border-color: #291a00;
         }
 
         .btn-danger {
@@ -93,6 +112,16 @@
         .btn-danger:hover {
             background-color: #c82333;
             border-color: #bd2130;
+        }
+
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
 
         body.morning {
@@ -119,6 +148,7 @@
             background-repeat: no-repeat;
         }
 
+
         #calendar .fc-event {
             color: #fff;
             font-size: 14px;
@@ -134,11 +164,16 @@
 
         #calendar .fc-event:hover {
             transform: scale(1.05);
-            background-color: #0056b3;
+            background-color: #391b00;
         }
 
         #calendar .fc-day-grid-event {
             border-radius: 5px;
+        }
+
+        .fc-event {
+            background-color: #291a00 !important;
+            border: 1px solid #291a00 !important;
         }
 
         .fc-event .fc-title {
@@ -150,10 +185,30 @@
             font-size: 0.85em;
             color: #fff;
         }
+
+        .fc-content {
+            text-align: center;
+            background-color: #582900;
+            border: 1px solid #391b00 !important;
+        }
+
+        .fc-today {
+            color: #ffffff;
+            background-color: #2c140068 !important;
+        }
+
+        .toast-info {
+            background-color: rgba(255, 145, 0, 0.5);
+        }
     </style>
 </head>
 
 <body>
+
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="{{ asset('background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
 
     <div class="container">
         <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
@@ -217,7 +272,8 @@
                     <button type="button" class="btn btn-danger" id="removeEventBtn"
                         style="display:none;">Hapus</button>
                     <button type="button" class="btn btn-primary" id="saveEventBtn">Simpan</button>
-                    <button type="button" class="btn btn-info" id="showEventBtn" style="display:none;">Lihat</button>
+                    <button type="button" class="btn btn-info" id="showEventBtn"
+                        style="display:none;">Lihat</button>
                 </div>
             </div>
         </div>
@@ -254,7 +310,7 @@
                     $('#eventModal').modal('show');
                     $('#eventStart').val(moment(start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(moment(end).subtract(1, 'day').format(
-                    'YYYY-MM-DD')); // Subtract one day for display
+                        'YYYY-MM-DD')); // Subtract one day for display
                 },
                 eventRender: function(event, element) {
                     element.find('.fc-title').append('<div class="fc-room">' + event.location +
@@ -268,7 +324,7 @@
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
                         'YYYY-MM-DD') : moment(event.start).format(
-                    'YYYY-MM-DD')); // Subtract one day for display
+                        'YYYY-MM-DD')); // Subtract one day for display
                     $('#eventDescription').val(event.description);
                     $('#eventLocation').val(event.location);
                     $('#eventCategory').val(event.category);
@@ -297,7 +353,8 @@
 
                     if (hasOverlappingEvents(updatedEvent)) {
                         alert(
-                            'Acara tidak bisa dipindahkan. Ruangan sudah terpakai pada waktu tersebut.');
+                            'Acara tidak bisa dipindahkan. Ruangan sudah terpakai pada waktu tersebut.'
+                        );
                         revertFunc();
                         return;
                     }
@@ -348,8 +405,8 @@
                     $('#eventTitle').val(event.title);
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
-                        'YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')
-                        ); // Subtract one day for display
+                        'YYYY-MM-DD') : moment(event.start).format(
+                        'YYYY-MM-DD')); // Subtract one day for display
                     $('#eventDescription').val(event.description);
                     $('#eventLocation').val(event.location);
                     $('#eventCategory').val(event.category);

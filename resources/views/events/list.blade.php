@@ -12,12 +12,22 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-color: rgb(48, 21, 0, );
             color: #333;
         }
 
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
         .container {
-            background-color: #fff;
+            background-color: rgba(255, 145, 0, 0.5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             padding: 30px;
             border-radius: 10px;
@@ -29,7 +39,7 @@
 
         h1 {
             font-size: 2.5rem;
-            color: #007bff;
+            color: #ffffff;
             text-align: center;
             margin-bottom: 30px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -38,35 +48,53 @@
 
         .btn {
             margin-bottom: 5px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(129, 74, 74, 0.1);
         }
 
         .btn-secondary {
-            background-color: #6c757d;
+            background-color: #291a00;
             border: none;
         }
 
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #352200;
+        }
+
+        .btn-secondary:focus {
+            background-color: #352200 !important;
+            box-shadow: 0 0 0 .2rem rgba(43, 21, 0, 0.5) !important;
         }
 
         .btn-primary {
-            background-color: #007bff;
+            background-color: #291a00;
             border: none;
         }
 
         .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #352200;
+        }
+
+        .btn-primary:focus {
+            background-color: #352200;
+            box-shadow: 0 0 0 .2rem rgba(43, 21, 0, 0.5) !important;
+        }
+
+        .btn-primary:active {
+            background-color: #352200 !important;
         }
 
         .input-group {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            background-color: #291a00;
             border-radius: 5px;
             overflow: hidden;
         }
 
         .input-group .form-control {
             border: none;
+            color: #fff;
+            background-color: #582900;
         }
 
         .input-group-append .btn {
@@ -85,7 +113,8 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #fff;
+            background-color: #7c3a0080;
+            color: #fff !important;
             padding: 0;
             margin: 0;
         }
@@ -93,14 +122,10 @@
         thead th {
             position: sticky;
             top: 0;
-            background-color: #007bff;
+            background-color: #582900;
             color: #fff;
             z-index: 10;
             text-align: center;
-        }
-
-        tbody tr:hover {
-            background-color: #f1f1f1;
         }
 
 
@@ -129,6 +154,12 @@
 </head>
 
 <body>
+
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="{{ asset('background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div class="container mt-4">
         <h1 class="mb-4">Daftar Agenda</h1>
         <a href="{{ url('/') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
