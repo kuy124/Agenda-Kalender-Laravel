@@ -22,8 +22,17 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #a2c2e9, #f6d365);
             font-family: Arial, sans-serif;
+        }
+
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
         }
 
         .map-container {
@@ -40,7 +49,7 @@
         }
 
         .contact-info {
-            background-color: #ffffff;
+            background-color: rgba(49, 22, 0, 0.8);
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -49,11 +58,12 @@
         .contact-info h1 {
             text-align: center;
             font-size: 2rem;
-            color: #007bff;
+            color: #ffffff;
             margin-bottom: 20px;
         }
 
         .contact-info p {
+            color: #fff;
             display: flex;
             padding-left: 25%;
             text-align: justify;
@@ -66,25 +76,17 @@
             margin-top: 20px;
         }
 
-        .footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #007bff;
-            color: #ffffff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .footer p {
-            margin: 0;
-        }
     </style>
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; img-src 'self' https://img.pikbest.com; script-src 'self' https://code.jquery.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com; style-src 'self' https://stackpath.bootstrapcdn.com;">
 </head>
 
 <body>
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="{{ asset('background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div class="container">
         <div class="contact-info">
             <h1>Kontak</h1>

@@ -16,8 +16,18 @@
             overflow-x: hidden;
         }
 
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
         .container {
-            background-color: #fff;
+            background-color: rgba(49, 22, 0, 0.8);
             padding: 40px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
@@ -30,7 +40,7 @@
 
         h1 {
             font-size: 3rem;
-            color: #007bff;
+            color: #ffffff;
             text-align: center;
             margin-bottom: 30px;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -39,21 +49,21 @@
 
         .event-details p {
             font-size: 1.2rem;
-            color: #333;
+            color: #ffffff;
             margin-bottom: 15px;
             padding: 15px;
-            background: #f9f9f9;
+            background: #7c3a0080;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease;
         }
 
         .event-details p:hover {
-            background-color: #e2e6ea;
+            background-color: #6f2e00;
         }
 
         .event-details p strong {
-            color: #007bff;
+            color: #ffd072;
         }
 
         .btn {
@@ -105,6 +115,12 @@
 </head>
 
 <body>
+
+    <video autoplay muted loop id="backgroundVideo">
+        <source src="{{ asset('background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div class="container">
         <h1>{{ $event->title }}</h1>
         <div class="event-details">
