@@ -11,8 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
-        html,
-        body {
+        html, body {
             height: 100%;
             margin: 0;
         }
@@ -46,28 +45,27 @@
         .container {
             max-width: 800px;
             width: 100%;
+            padding: 15px; /* Added padding for small devices */
         }
 
         .contact-info {
             background-color: rgba(49, 22, 0, 0.8);
-            padding: 30px;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .contact-info h1 {
             text-align: center;
-            font-size: 2rem;
+            font-size: 1.5rem; /* Adjusted for better scaling */
             color: #ffffff;
             margin-bottom: 20px;
         }
 
         .contact-info p {
             color: #fff;
-            display: flex;
-            padding-left: 25%;
             text-align: justify;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Adjusted font size for better readability */
         }
 
         .contact-info .btn-container {
@@ -76,6 +74,34 @@
             margin-top: 20px;
         }
 
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .contact-info {
+                padding: 15px;
+            }
+
+            .contact-info h1 {
+                font-size: 1.2rem;
+            }
+
+            .contact-info p {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .contact-info {
+                padding: 10px;
+            }
+
+            .contact-info h1 {
+                font-size: 1rem;
+            }
+
+            .contact-info p {
+                font-size: 0.8rem;
+            }
+        }
     </style>
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; img-src 'self' https://img.pikbest.com; script-src 'self' https://code.jquery.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com; style-src 'self' https://stackpath.bootstrapcdn.com;">

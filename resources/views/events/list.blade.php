@@ -12,8 +12,10 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: rgb(48, 21, 0, );
+            background-color: rgb(48, 21, 0);
             color: #333;
+            margin: 0;
+            padding: 0;
         }
 
         #backgroundVideo {
@@ -29,25 +31,25 @@
         .container {
             background-color: rgba(255, 145, 0, 0.5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 30px;
+            padding: 20px;
             border-radius: 10px;
             max-width: 900px;
-            margin: 30px auto;
+            margin: 20px auto;
             transform: translateZ(0);
             animation: fadeIn 1s ease-in-out;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: #ffffff;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             animation: slideDown 0.5s ease-in-out;
         }
 
         .btn {
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             box-shadow: 0 4px 10px rgba(129, 74, 74, 0.1);
         }
 
@@ -108,6 +110,7 @@
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             position: relative;
+            margin-top: 20px;
         }
 
         table {
@@ -128,12 +131,10 @@
             text-align: center;
         }
 
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
             }
-
             to {
                 opacity: 1;
             }
@@ -144,10 +145,35 @@
                 transform: translateY(-50px);
                 opacity: 0;
             }
-
             to {
                 transform: translateY(0);
                 opacity: 1;
+            }
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .btn {
+                margin-bottom: 8px;
             }
         }
     </style>

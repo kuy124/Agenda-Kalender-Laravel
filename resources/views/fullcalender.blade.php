@@ -14,7 +14,7 @@
         body {
             font-family: 'Roboto', sans-serif;
             scroll-behavior: smooth;
-            background-color: #f4f4f4;
+            background-color: #2d1100;
             color: #333;
             margin: 0;
             padding: 0;
@@ -124,31 +124,6 @@
             z-index: -1;
         }
 
-        body.morning {
-            background-image: url('https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        body.afternoon {
-            background-image: url('https://images.unsplash.com/photo-1445297983845-454043d4eef4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        body.evening {
-            background-image: url('https://images.unsplash.com/photo-1495566661745-11ef9f1e8bcf?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-        body.night {
-            background-image: url('https://images.unsplash.com/photo-1508739773434-c26b3d09e071?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-            background-size: cover;
-            background-repeat: no-repeat;
-        }
-
-
         #calendar .fc-event {
             color: #fff;
             font-size: 14px;
@@ -204,7 +179,6 @@
 </head>
 
 <body>
-
     <video autoplay muted loop id="backgroundVideo">
         <source src="{{ asset('background.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
@@ -378,25 +352,6 @@
                 }
             });
 
-            function setBackgroundBasedOnTime() {
-                var currentHour = new Date().getHours();
-                var body = $('body');
-
-                body.removeClass('morning afternoon evening night');
-
-                if (currentHour >= 5 && currentHour < 12) {
-                    body.addClass('morning');
-                } else if (currentHour >= 12 && currentHour < 18) {
-                    body.addClass('afternoon');
-                } else if (currentHour >= 18 && currentHour < 22) {
-                    body.addClass('evening');
-                } else {
-                    body.addClass('night');
-                }
-            }
-
-            setBackgroundBasedOnTime();
-
             $('#eventModal').on('show.bs.modal', function(e) {
                 var event = $(e.relatedTarget).data('event');
                 if (event) {
@@ -406,7 +361,7 @@
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
                         'YYYY-MM-DD') : moment(event.start).format(
-                        'YYYY-MM-DD')); // Subtract one day for display
+                        'YYYY-MM-DD'));
                     $('#eventDescription').val(event.description);
                     $('#eventLocation').val(event.location);
                     $('#eventCategory').val(event.category);
