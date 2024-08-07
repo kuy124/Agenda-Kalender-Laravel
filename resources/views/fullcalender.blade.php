@@ -198,6 +198,16 @@
             background-color: rgba(255, 145, 0, 0.5);
         }
 
+        .clock {
+            font-size: 3rem;
+            font-weight: bold;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            background-color: #2e1d00;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
         .details {
             padding: 20px;
             margin-bottom: 10px;
@@ -223,6 +233,7 @@
             <div id="calendar" class="calendar"></div>
         </div>
         <div class="container-sidebar">
+            <div class="clock" id="clock"></div>
             <h1>Detail Agenda</h1>
             <div id="sidebarEventDetails">
             </div>
@@ -565,6 +576,18 @@
                 };
                 toastr.error(message, "Error");
             }
+
+            function updateClock() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+
+                document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            }
+
+            updateClock();
+            setInterval(updateClock, 1000);
 
             function displayMessage(message) {
                 toastr.options = {
