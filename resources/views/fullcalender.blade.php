@@ -284,7 +284,7 @@
                     $('#eventModal').modal('show');
                     $('#eventStart').val(moment(start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(moment(end).subtract(1, 'day').format(
-                        'YYYY-MM-DD')); // Subtract one day for display
+                        'YYYY-MM-DD'));
                 },
                 eventRender: function(event, element) {
                     element.find('.fc-title').append('<div class="fc-room">' + event.location +
@@ -298,7 +298,7 @@
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
                     $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
                         'YYYY-MM-DD') : moment(event.start).format(
-                        'YYYY-MM-DD')); // Subtract one day for display
+                        'YYYY-MM-DD'));
                     $('#eventDescription').val(event.description);
                     $('#eventLocation').val(event.location);
                     $('#eventCategory').val(event.category);
@@ -345,7 +345,7 @@
                             },
                             error: function() {
                                 revertFunc();
-                                displayMessage("Gagal memperbarui acara");
+                                showErrorPopup("Gagal memperbarui acara");
                             }
                         });
                     }, 500);
@@ -380,12 +380,12 @@
             function hasOverlappingEvents(newEvent) {
                 var events = $('#calendar').fullCalendar('clientEvents');
                 var newEventStart = moment(newEvent.start);
-                var newEventEnd = moment(newEvent.end || newEvent.start).subtract(1, 'day'); // Adjust end date
+                var newEventEnd = moment(newEvent.end || newEvent.start).subtract(1, 'day');
 
                 for (var i = 0; i < events.length; i++) {
                     var event = events[i];
                     var eventStart = moment(event.start);
-                    var eventEnd = moment(event.end || event.start).subtract(1, 'day'); // Adjust end date
+                    var eventEnd = moment(event.end || event.start).subtract(1, 'day');
 
                     if (event.id !== newEvent.id &&
                         event.location === newEvent.location &&
@@ -409,7 +409,7 @@
                     event.location = $('#eventLocation').val();
                     event.category = $('#eventCategory').val();
                     event.start = moment($('#eventStart').val());
-                    event.end = moment($('#eventEnd').val()).add(1, 'day'); // Add one day when saving
+                    event.end = moment($('#eventEnd').val()).add(1, 'day');
                     eventData = {
                         id: event.id,
                         title: event.title,
@@ -456,7 +456,7 @@
                         location.reload();
                     },
                     error: function(xhr) {
-                        displayMessage(xhr.responseJSON.message || "Gagal menyimpan acara");
+                        showErrorPopup(xhr.responseJSON.message || "Gagal menyimpan acara");
                     }
                 });
             });
@@ -495,10 +495,31 @@
             });
 
             function showErrorPopup(message) {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    timeOut: 0,
+                    extendedTimeOut: 0,
+                    tapToDismiss: true,
+                    positionClass: 'toast-top-right',
+                    preventDuplicates: true,
+                    newestOnTop: true,
+                };
                 toastr.error(message, "Error");
             }
 
             function displayMessage(message) {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+                    timeOut: 5000,
+                    extendedTimeOut: 1000,
+                    tapToDismiss: true,
+                    positionClass: 'toast-top-right',
+                    preventDuplicates: true,
+                    newestOnTop: true,
+                };
+
                 toastr.success(message);
             }
 

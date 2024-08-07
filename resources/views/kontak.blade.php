@@ -22,6 +22,7 @@
             justify-content: center;
             align-items: center;
             font-family: Arial, sans-serif;
+            background-color: rgb(48, 21, 0);
         }
 
         #backgroundVideo {
@@ -45,7 +46,7 @@
         .container {
             max-width: 800px;
             width: 100%;
-            padding: 15px; /* Added padding for small devices */
+            padding: 15px;
         }
 
         .contact-info {
@@ -57,7 +58,7 @@
 
         .contact-info h1 {
             text-align: center;
-            font-size: 1.5rem; /* Adjusted for better scaling */
+            font-size: 1.5rem; 
             color: #ffffff;
             margin-bottom: 20px;
         }
@@ -65,7 +66,7 @@
         .contact-info p {
             color: #fff;
             text-align: justify;
-            font-size: 1rem; /* Adjusted font size for better readability */
+            font-size: 1rem;
         }
 
         .contact-info .btn-container {
@@ -74,7 +75,6 @@
             margin-top: 20px;
         }
 
-        /* Media Queries for responsiveness */
         @media (max-width: 768px) {
             .contact-info {
                 padding: 15px;

@@ -10,7 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #e2e2e2 0%, #c3cfe2 100%);
+            background: rgb(48, 21, 0);
             padding-top: 20px;
             font-family: 'Roboto', sans-serif;
             overflow-x: hidden;
