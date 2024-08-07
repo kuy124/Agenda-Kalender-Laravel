@@ -291,6 +291,10 @@
                             <label for="eventCategory">Baju</label>
                             <input type="text" class="form-control" id="eventCategory" placeholder="Masukkan Baju">
                         </div>
+                        <div class="form-group">
+                            <label for="eventImage">Gambar</label>
+                            <input type="file" class="form-control" id="eventImage">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -344,16 +348,17 @@
                 },
                 eventClick: function(event) {
                     $('#sidebarEventDetails').html(`
-                    <div class="details">
-                    <h3>${event.title}</h3>
-                    <hr>
-                    <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
-                    <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
-                    <p><strong>Deskripsi:</strong> ${event.description}</p>
-                    <p><strong>Ruangan:</strong> ${event.location}</p>
-                    <p><strong>Baju:</strong> ${event.category}</p>
-                    </div>
-                `);
+                        <div class="details">
+                            <h3>${event.title}</h3>
+                            <hr>
+                            ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%; border-radius: 20px;"/>` : ''}
+                            <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
+                            <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
+                            <p><strong>Deskripsi:</strong> ${event.description}</p>
+                            <p><strong>Ruangan:</strong> ${event.location}</p>
+                            <p><strong>Baju:</strong> ${event.category}</p>
+                        </div>
+                    `);
                     $('#updateEventSidebarBtn').show().data('event', event);
                 },
                 eventDrop: function(event, delta, revertFunc) {
@@ -470,6 +475,7 @@
             $('#saveEventBtn').click(function() {
                 var eventData;
                 var updateBtn = $(this).text() === 'Perbarui';
+                var formData = new FormData();
 
                 if (updateBtn) {
                     var event = $(this).data('event');
@@ -489,7 +495,14 @@
                         category: event.category,
                         _method: 'PUT'
                     };
-                    var requestUrl = SITEURL + "/events/" + event.id;
+                    formData.append('id', event.id);
+                    formData.append('_method', 'PUT');
+                    formData.append('title', event.title);
+                    formData.append('start', event.start.format('YYYY-MM-DD'));
+                    formData.append('end', event.end ? event.end.format('YYYY-MM-DD') : null);
+                    formData.append('description', event.description);
+                    formData.append('location', event.location);
+                    formData.append('category', event.category);
                 } else {
                     eventData = {
                         title: $('#eventTitle').val(),
@@ -500,18 +513,28 @@
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
                     };
-                    var requestUrl = SITEURL + "/events";
+                    formData.append('title', $('#eventTitle').val());
+                    formData.append('start', $('#eventStart').val());
+                    formData.append('end', $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day')
+                        .format('YYYY-MM-DD') : null);
+                    formData.append('description', $('#eventDescription').val());
+                    formData.append('location', $('#eventLocation').val());
+                    formData.append('category', $('#eventCategory').val());
                 }
 
-                if (hasOverlappingEvents(eventData)) {
-                    alert('Acara tidak bisa dibuat. Ruangan sudah terpakai pada waktu tersebut.');
-                    return;
+                var imageFile = $('#eventImage')[0].files[0];
+                if (imageFile) {
+                    formData.append('image', imageFile);
                 }
+
+                var requestUrl = updateBtn ? SITEURL + "/events/" + event.id : SITEURL + "/events";
 
                 $.ajax({
                     url: requestUrl,
-                    data: eventData,
+                    data: formData,
                     type: "POST",
+                    processData: false,
+                    contentType: false,
                     success: function(data) {
                         if (updateBtn) {
                             calendar.fullCalendar('updateEvent', event);

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -35,35 +36,47 @@ class EventController extends Controller
     public function show($id)
     {
         $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+
+        return response()->json([
+            'id' => $event->id,
+            'title' => $event->title,
+            'start' => $event->start,
+            'end' => $event->end,
+            'description' => $event->description,
+            'location' => $event->location,
+            'category' => $event->category,
+            'image' => $event->image ? url('storage/' . $event->image) : null, // Adjust path as needed
+        ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|string|max:255',
             'start' => 'required|date',
-            'end' => 'required|date',
-            'location' => 'required',
+            'end' => 'nullable|date',
+            'description' => 'required|string',
+            'location' => 'nullable|string',
+            'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $existingEvent = Event::where('location', $request->location)
-            ->whereDate('start', $request->start)
-            ->first();
+        $event = new Event();
+        $event->title = $request->input('title');
+        $event->start = $request->input('start');
+        $event->end = $request->input('end');
+        $event->description = $request->input('description');
+        $event->location = $request->input('location');
+        $event->category = $request->input('category');
 
-        if ($existingEvent) {
-            return response()->json(['message' => 'Ruangan sudah dipesan pada tanggal ini.'], 400);
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $event->image = $imageName;
         }
 
-        // Ensure date fields are in the right format
-        $event = Event::create([
-            'title' => $request->input('title'),
-            'start' => Carbon::parse($request->input('start'))->format('Y-m-d'),
-            'end' => Carbon::parse($request->input('end'))->format('Y-m-d'),
-            'location' => $request->input('location'),
-            'description' => $request->input('description'),
-            'category' => $request->input('category')
-        ]);
+        $event->save();
 
         return response()->json($event);
     }
@@ -71,38 +84,40 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => 'required|string|max:255',
             'start' => 'required|date',
-            'end' => 'required|date',
-            'location' => 'required',
+            'end' => 'nullable|date',
+            'description' => 'required|string',
+            'location' => 'nullable|string',
+            'category' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $existingEvent = Event::where('location', $request->location)
-            ->whereDate('start', $request->start)
-            ->where('id', '!=', $id)
-            ->first();
+        $event = Event::findOrFail($id);
+        $event->title = $request->input('title');
+        $event->start = $request->input('start');
+        $event->end = $request->input('end');
+        $event->description = $request->input('description');
+        $event->location = $request->input('location');
+        $event->category = $request->input('category');
 
-        if ($existingEvent) {
-            return response()->json(['message' => 'Ruangan sudah dipesan pada tanggal ini.'], 400);
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($event->image) {
+                Storage::delete('public/images/' . $event->image);
+            }
+
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images'), $imageName);
+            $event->image = $imageName;
         }
 
-        $event = Event::find($id);
+        $event->save();
 
-        if ($event) {
-            $event->update([
-                'title' => $request->input('title'),
-                'start' => Carbon::parse($request->input('start'))->format('Y-m-d'),
-                'end' => Carbon::parse($request->input('end'))->format('Y-m-d'),
-                'location' => $request->input('location'),
-                'description' => $request->input('description'),
-                'category' => $request->input('category')
-            ]);
-
-            return response()->json($event);
-        }
-
-        return response()->json(['message' => 'Event not found'], 404);
+        return response()->json($event);
     }
+
 
     public function getTodaysEvents()
     {
@@ -111,16 +126,26 @@ class EventController extends Controller
         return response()->json($events);
     }
 
-
     public function destroy($id)
     {
         $event = Event::find($id);
-
         if ($event) {
+            // Delete image
+            if ($event->image && Storage::exists('public/' . $event->image)) {
+                Storage::delete('public/' . $event->image);
+            }
             $event->delete();
             return response()->json(['success' => true]);
         }
 
         return response()->json(['success' => false, 'message' => 'Event not found'], 404);
+    }
+
+    private function isLocationBooked($location, $start, $excludeId = null)
+    {
+        return Event::where('location', $location)
+            ->whereDate('start', $start)
+            ->where('id', '!=', $excludeId)
+            ->exists();
     }
 }

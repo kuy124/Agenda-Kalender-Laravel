@@ -16,9 +16,11 @@ class CreateEventsTable extends Migration
             $table->string('category')->nullable();
             $table->date('start');
             $table->date('end')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
+    
 
     public function down()
     {
