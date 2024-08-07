@@ -187,7 +187,7 @@
 
     <div class="container mt-4">
         <h1 class="mb-4">Daftar Agenda</h1>
-        <a href="{{ url('/calendar') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
+        <a href="{{ url('/') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Kembali</a>
         <form method="GET" action="{{ route('events.search') }}" class="mb-4">
             <div class="input-group">
                 <input type="text" class="form-control" name="query" placeholder="Cari..."
@@ -209,7 +209,6 @@
                         <th>Baju</th>
                         <th>Tanggal Mulai</th>
                         <th>Tanggal Selesai</th>
-                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,11 +221,6 @@
                             <td>{{ $event->category }}</td>
                             <td>{{ $event->start }}</td>
                             <td class="end-date" data-date="{{ $event->end }}">{{ $event->end }}</td>
-                            <td>
-                                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $event->id }}">
-                                    <i class="fas fa-trash"></i> Hapus
-                                </button>
-                            </td>
                         </tr>
                     @empty
                         <tr>

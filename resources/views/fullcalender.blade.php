@@ -209,7 +209,9 @@
         }
 
         .details {
+            overflow-y: auto;
             padding: 20px;
+            max-height: 450px;
             margin-bottom: 10px;
             border-radius: 20px;
             background-color: rgba(255, 145, 0, 0.5);
@@ -229,7 +231,7 @@
     <div class="container-wrapper">
         <div class="container">
             <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
-            <a href="{{ url('kontak') }}" class="btn btn-secondary mb-3">Kontak</a>
+            <a href="{{ url('/') }}" class="btn btn-warning mb-3">Log Out</a>
             <div id="calendar" class="calendar"></div>
         </div>
         <div class="container-sidebar">
@@ -524,6 +526,7 @@
                 if (imageFile) {
                     formData.append('image', imageFile);
                 }
+
 
                 var requestUrl = updateBtn ? SITEURL + "/events/" + event.id : SITEURL + "/events";
 

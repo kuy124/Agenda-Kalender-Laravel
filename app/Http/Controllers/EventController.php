@@ -21,6 +21,12 @@ class EventController extends Controller
         return view('events.list', compact('events'));
     }
 
+    public function listguest()
+    {
+        $events = Event::all();
+        return view('events.listguest', compact('events'));
+    }
+
     public function search(Request $request)
     {
         $query = $request->input('query');
@@ -58,7 +64,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
         $event = new Event();
@@ -90,7 +96,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
         $event = Event::findOrFail($id);
