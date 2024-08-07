@@ -20,14 +20,36 @@
             padding: 0;
         }
 
+        .container-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 40px auto;
+            max-width: 1200px;
+        }
+
         .container {
             background-color: rgba(49, 22, 0, 0.8);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            padding: 20px;
             border-radius: 10px;
+            padding: 20px;
             max-width: 900px;
             margin: 30px auto;
             transform: translateZ(0);
+        }
+
+        .container-sidebar {
+            width: 400px;
+            background-color: rgba(49, 22, 0, 0.8);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px auto;
+        }
+
+        .container,
+        .container-sidebar,
+        h1 {
+            color: #fff !important;
         }
 
         h1 {
@@ -175,6 +197,17 @@
         .toast-info {
             background-color: rgba(255, 145, 0, 0.5);
         }
+
+        .details {
+            padding: 20px;
+            margin-bottom: 10px;
+            border-radius: 20px;
+            background-color: rgba(255, 145, 0, 0.5);
+        }
+
+        hr {
+            border: 1px solid white;
+        }
     </style>
 </head>
 
@@ -183,12 +216,20 @@
         <source src="{{ asset('background.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-
-    <div class="container">
-        <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
-        <a href="{{ url('kontak') }}" class="btn btn-secondary mb-3">Kontak</a>
-        <div id="calendar" class="calendar"></div>
+    <div class="container-wrapper">
+        <div class="container">
+            <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
+            <a href="{{ url('kontak') }}" class="btn btn-secondary mb-3">Kontak</a>
+            <div id="calendar" class="calendar"></div>
+        </div>
+        <div class="container-sidebar">
+            <h1>Detail Agenda</h1>
+            <div id="sidebarEventDetails">
+            </div>
+            <button class="btn btn-primary" id="updateEventSidebarBtn" style="display:none;">Perbarui</button>
+        </div>
     </div>
+
 
     <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
         aria-hidden="true">
@@ -291,20 +332,18 @@
                         '</div>');
                 },
                 eventClick: function(event) {
-                    $('#eventModal').modal('show');
-                    $('#eventModalLabel').text('Edit Acara');
-                    $('#eventId').val(event.id);
-                    $('#eventTitle').val(event.title);
-                    $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
-                    $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
-                        'YYYY-MM-DD') : moment(event.start).format(
-                        'YYYY-MM-DD'));
-                    $('#eventDescription').val(event.description);
-                    $('#eventLocation').val(event.location);
-                    $('#eventCategory').val(event.category);
-                    $('#saveEventBtn').text('Perbarui').data('event', event);
-                    $('#removeEventBtn').show().data('event', event);
-                    $('#showEventBtn').show().data('event', event);
+                    $('#sidebarEventDetails').html(`
+                    <div class="details">
+                    <h3>${event.title}</h3>
+                    <hr>
+                    <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
+                    <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
+                    <p><strong>Deskripsi:</strong> ${event.description}</p>
+                    <p><strong>Ruangan:</strong> ${event.location}</p>
+                    <p><strong>Baju:</strong> ${event.category}</p>
+                    </div>
+                `);
+                    $('#updateEventSidebarBtn').show().data('event', event);
                 },
                 eventDrop: function(event, delta, revertFunc) {
                     var today = moment().startOf('day');
@@ -374,6 +413,25 @@
                     $('#removeEventBtn').hide().removeData('event');
                     $('#showEventBtn').hide().removeData('event');
                     $('#eventForm')[0].reset();
+                }
+            });
+
+            $('#updateEventSidebarBtn').click(function() {
+                var event = $(this).data('event');
+                if (event) {
+                    $('#eventModal').modal('show');
+                    $('#eventModalLabel').text('Edit Acara');
+                    $('#eventId').val(event.id);
+                    $('#eventTitle').val(event.title);
+                    $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
+                    $('#eventEnd').val(event.end ? moment(event.end).subtract(1, 'day').format(
+                        'YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD'));
+                    $('#eventDescription').val(event.description);
+                    $('#eventLocation').val(event.location);
+                    $('#eventCategory').val(event.category);
+                    $('#saveEventBtn').text('Perbarui').data('event', event);
+                    $('#removeEventBtn').show().data('event', event);
+                    $('#showEventBtn').show().data('event', event);
                 }
             });
 
