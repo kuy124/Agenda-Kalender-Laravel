@@ -302,8 +302,6 @@
                     <button type="button" class="btn btn-danger" id="removeEventBtn"
                         style="display:none;">Hapus</button>
                     <button type="button" class="btn btn-primary" id="saveEventBtn">Simpan</button>
-                    <button type="button" class="btn btn-info" id="showEventBtn"
-                        style="display:none;">Lihat</button>
                 </div>
             </div>
         </div>

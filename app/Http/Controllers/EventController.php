@@ -45,7 +45,7 @@ class EventController extends Controller
             'description' => $event->description,
             'location' => $event->location,
             'category' => $event->category,
-            'image' => $event->image ? url('storage/' . $event->image) : null, // Adjust path as needed
+            'image' => $event->image ? url('storage/' . $event->image) : null,
         ]);
     }
 
