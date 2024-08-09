@@ -274,7 +274,7 @@
                         <div class="details">
                             <h3>${event.title}</h3>
                             <hr>
-                            ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%; border-radius: 20px;"/>` : ''}
+                            ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
                             <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
                             <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
