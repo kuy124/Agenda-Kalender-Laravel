@@ -136,9 +136,8 @@ class EventController extends Controller
     {
         $event = Event::find($id);
         if ($event) {
-            // Delete image
-            if ($event->image && Storage::exists('public/' . $event->image)) {
-                Storage::delete('public/' . $event->image);
+            if ($event->image && Storage::exists('public/images/' . $event->image)) {
+                Storage::delete('public/images/' . $event->image);
             }
             $event->delete();
             return response()->json(['success' => true]);
@@ -146,6 +145,7 @@ class EventController extends Controller
 
         return response()->json(['success' => false, 'message' => 'Event not found'], 404);
     }
+
 
     private function isLocationBooked($location, $start, $excludeId = null)
     {
