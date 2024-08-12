@@ -25,7 +25,6 @@ Route::get('/events/listguest', [EventController::class, 'listguest'])->name('ev
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('events/{id}', [EventController::class, 'show'])->name('events.show');
 
-// Apply middleware directly to route groups
 Route::middleware([CheckIsAdmin::class])->group(function () {
     Route::get('/calendar', [FullCalenderController::class, 'index']);
     Route::post('fullcalenderAjax', [FullCalenderController::class, 'ajax']);
