@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User; // Use your User model or Member model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -22,7 +21,17 @@ class LoginController extends Controller
 
         // Attempt to authenticate the user
         if (Auth::attempt($credentials)) {
-            // Redirect to calendar on successful login
+            // Get the authenticated user
+            $user = Auth::user();
+
+            // Check if the user is an admin
+            if ($user->IsAdmin !== 1) {
+                // Log the user out and redirect back with an error message
+                Auth::logout();
+                return Redirect::back()->withErrors(['error' => 'You do not have admin access.']);
+            }
+
+            // Redirect to calendar on successful login if admin
             return Redirect::to('calendar');
         }
 
