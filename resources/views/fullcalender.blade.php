@@ -231,7 +231,7 @@
     <div class="container-wrapper">
         <div class="container">
             <form action="{{ url('logout') }}" method="post">
-            <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
+                <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
                 @csrf
                 <button type="submit" class="btn btn-warning mb-3">Log out</button>
             </form>
@@ -338,6 +338,16 @@
                 select: function(start, end, allDay) {
                     var today = moment().startOf('day');
                     if (start.isBefore(today)) {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
                         toastr.error('Anda tidak bisa memesan ruangan untuk tanggal sebelum hari ini.');
                         calendar.fullCalendar('unselect');
                         return;
@@ -369,6 +379,16 @@
                 eventDrop: function(event, delta, revertFunc) {
                     var today = moment().startOf('day');
                     if (event.start.isBefore(today)) {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
                         toastr.error('Anda tidak bisa memindahkan acara ke tanggal sebelum hari ini.');
                         revertFunc();
                         return;
@@ -386,6 +406,16 @@
                     };
 
                     if (hasOverlappingEvents(updatedEvent)) {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
                         toastr.error(
                             'Acara tidak bisa dipindahkan. Ruangan sudah terpakai pada waktu tersebut.'
                         );
@@ -533,6 +563,17 @@
                 }
 
                 if (hasOverlappingEvents(eventData)) {
+                    toastr.options = {
+                        closeButton: true,
+                        progressBar: true,
+                        timeOut: 5000,
+                        extendedTimeOut: 1000,
+                        tapToDismiss: true,
+                        positionClass: 'toast-top-right',
+                        preventDuplicates: true,
+                        newestOnTop: true,
+                    };
+
                     toastr.error(
                         'Acara tidak bisa ditambahkan. Ruangan sudah terpakai pada waktu tersebut.');
                     return;
