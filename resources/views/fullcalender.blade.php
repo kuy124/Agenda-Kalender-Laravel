@@ -239,7 +239,9 @@
             <h1>Detail Agenda</h1>
             <div id="sidebarEventDetails">
             </div>
-            <button class="btn btn-primary" id="updateEventSidebarBtn" style="display:none;">Perbarui</button>
+            <p align="center">
+                <button class="btn btn-primary" id="updateEventSidebarBtn" style="display:none;">Perbarui</button>
+            </p>
         </div>
     </div>
 
@@ -333,7 +335,7 @@
                 select: function(start, end, allDay) {
                     var today = moment().startOf('day');
                     if (start.isBefore(today)) {
-                        alert('Anda tidak bisa memesan ruangan untuk tanggal sebelum hari ini.');
+                        toastr.error('Anda tidak bisa memesan ruangan untuk tanggal sebelum hari ini.');
                         calendar.fullCalendar('unselect');
                         return;
                     }
@@ -364,7 +366,7 @@
                 eventDrop: function(event, delta, revertFunc) {
                     var today = moment().startOf('day');
                     if (event.start.isBefore(today)) {
-                        alert('Anda tidak bisa memindahkan acara ke tanggal sebelum hari ini.');
+                        toastr.error('Anda tidak bisa memindahkan acara ke tanggal sebelum hari ini.');
                         revertFunc();
                         return;
                     }
@@ -381,7 +383,7 @@
                     };
 
                     if (hasOverlappingEvents(updatedEvent)) {
-                        alert(
+                        toastr.error(
                             'Acara tidak bisa dipindahkan. Ruangan sudah terpakai pada waktu tersebut.'
                         );
                         revertFunc();
@@ -527,51 +529,46 @@
                     formData.append('image', imageFile);
                 }
 
-
-                var requestUrl = updateBtn ? SITEURL + "/events/" + event.id : SITEURL + "/events";
+                if (hasOverlappingEvents(eventData)) {
+                    toastr.error(
+                        'Acara tidak bisa ditambahkan. Ruangan sudah terpakai pada waktu tersebut.');
+                    return;
+                }
 
                 $.ajax({
-                    url: requestUrl,
+                    url: SITEURL + "/events",
                     data: formData,
                     type: "POST",
                     processData: false,
                     contentType: false,
                     success: function(data) {
-                        if (updateBtn) {
-                            calendar.fullCalendar('updateEvent', event);
-                        } else {
-                            eventData.id = data.id;
-                            calendar.fullCalendar('renderEvent', eventData, true);
-                        }
+                        $('#calendar').fullCalendar('refetchEvents');
                         $('#eventModal').modal('hide');
                         displayMessage(updateBtn ? "Acara berhasil diperbarui" :
-                            "Acara berhasil dibuat");
-                        location.reload();
+                            "Acara berhasil ditambahkan");
                     },
-                    error: function(xhr) {
-                        showErrorPopup(xhr.responseJSON.message || "Gagal menyimpan acara");
+                    error: function() {
+                        showErrorPopup("Gagal menyimpan acara");
                     }
                 });
             });
 
             $('#removeEventBtn').click(function() {
                 var event = $(this).data('event');
-                if (confirm("Anda yakin ingin menghapus acara ini?")) {
-                    $.ajax({
-                        url: SITEURL + "/events/" + event.id,
-                        data: {
-                            _method: 'DELETE'
-                        },
-                        type: "POST",
-                        success: function(response) {
-                            calendar.fullCalendar('removeEvents', event.id);
-                            calendar.fullCalendar('removeEvents');
-                            calendar.fullCalendar('refetchEvents');
-                            $('#eventModal').modal('hide');
-                            displayMessage("Acara berhasil dihapus");
-                        }
-                    });
-                }
+                $.ajax({
+                    url: SITEURL + "/events/" + event.id,
+                    data: {
+                        _method: 'DELETE'
+                    },
+                    type: "POST",
+                    success: function(response) {
+                        calendar.fullCalendar('removeEvents', event.id);
+                        calendar.fullCalendar('removeEvents');
+                        calendar.fullCalendar('refetchEvents');
+                        $('#eventModal').modal('hide');
+                        displayMessage("Acara berhasil dihapus");
+                    }
+                });
             });
 
             $('#eventModal').on('hidden.bs.modal', function() {
