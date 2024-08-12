@@ -230,8 +230,11 @@
     </video>
     <div class="container-wrapper">
         <div class="container">
+            <form action="{{ url('logout') }}" method="post">
             <a href="{{ route('events.list') }}" class="btn btn-primary mb-3">Cari</a>
-            <a href="{{ url('/') }}" class="btn btn-warning mb-3">Log Out</a>
+                @csrf
+                <button type="submit" class="btn btn-warning mb-3">Log out</button>
+            </form>
             <div id="calendar" class="calendar"></div>
         </div>
         <div class="container-sidebar">
