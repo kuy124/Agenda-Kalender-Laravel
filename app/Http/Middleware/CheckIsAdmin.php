@@ -22,6 +22,7 @@ class CheckIsAdmin
 
         $user = Auth::user();
 
+        // Check for the IsAdmin attribute
         if ($user->IsAdmin !== 1) {
             return redirect('/login')->withErrors(['error' => 'You do not have admin access.']);
         }

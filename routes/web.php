@@ -17,10 +17,9 @@ Route::get('/kontak', function () {
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::get('/events/list', [EventController::class, 'list'])->name('events.list');
 Route::get('/events/today', [EventController::class, 'getTodaysEvents']);
 Route::get('/events/search', [EventController::class, 'search'])->name('events.search');
-Route::get('/events/list', [EventController::class, 'list'])->name('events.list');
 Route::get('/events/listguest', [EventController::class, 'listguest'])->name('events.listguest');
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('events/{id}', [EventController::class, 'show'])->name('events.show');
