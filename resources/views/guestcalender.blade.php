@@ -260,7 +260,7 @@
 
             var calendar = $('#calendar').fullCalendar({
                 editable: false,
-                events: SITEURL + "/events",
+                events: SITEURL + "/UserEvents",
                 displayEventTime: false,
                 selectable: true,
                 selectHelper: true,
@@ -329,7 +329,7 @@
 
             function notifyTodaysEvents() {
                 $.ajax({
-                    url: `${SITEURL}/events/today`,
+                    url: `${SITEURL}/today`,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {

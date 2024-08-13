@@ -132,6 +132,19 @@ class EventController extends Controller
         return response()->json($events);
     }
 
+    public function TodayNow()
+    {
+        $today = Carbon::today();
+        $events = Event::whereDate('start', $today)->get();
+        return response()->json($events);
+    }
+
+    public function indexUser()
+    {
+        $events = Event::all();
+        return response()->json($events);
+    }
+
     public function destroy($id)
     {
         $event = Event::find($id);
