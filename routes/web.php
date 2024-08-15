@@ -24,6 +24,11 @@ Route::get('/events/search', [EventController::class, 'search'])->name('events.s
 Route::get('/events/listguest', [EventController::class, 'listguest'])->name('events.listguest');
 Route::get('/UserEvents', [EventController::class, 'indexUser'])->name('events.indexUser');
 Route::get('events/{id}', [EventController::class, 'show'])->name('events.show');
+// In routes/web.php or routes/api.php
+Route::get('/current-events', [EventController::class, 'getCurrentEvents']);
+Route::delete('/events/{id}', [EventController::class, 'deleteEvent']);
+
+
 
 Route::middleware([CheckIsAdmin::class])->group(function () {
     Route::get('/events/search', [EventController::class, 'search'])->name('events.search');

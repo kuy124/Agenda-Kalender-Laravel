@@ -327,14 +327,22 @@
                 toastr.success(message);
             }
 
-            function notifyTodaysEvents() {
+            function notifyCurrentEvents() {
                 $.ajax({
-                    url: `${SITEURL}/today`,
+                    url: `${SITEURL}/current-events`,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        if (Array.isArray(data) && data.length > 0) {
-                            const eventList = data.map(event => {
+                        const now = new Date();
+
+                        const currentEvents = data.filter(event => {
+                            const start = new Date(event.start);
+                            const end = new Date(event.end);
+                            return now >= start && now <= end;
+                        });
+
+                        if (currentEvents.length > 0) {
+                            const eventList = currentEvents.map(event => {
                                 const loc = event.location ? `di ${event.location}` : '';
                                 return `<li>${event.title} ${loc}</li>`;
                             }).join('');
@@ -351,7 +359,7 @@
                                 newestOnTop: true,
                             };
 
-                            toastr.info(message, 'Acara Hari Ini', {
+                            toastr.info(message, 'Acara Sekarang', {
                                 allowHtml: true,
                                 escapeHtml: false
                             });
@@ -367,7 +375,7 @@
                                 newestOnTop: true,
                             };
 
-                            toastr.info("Tidak ada acara terjadwal untuk hari ini.", 'Info');
+                            toastr.info("Tidak ada acara yang sedang berlangsung saat ini.", 'Info');
                         }
                     },
                     error: function(xhr, status, error) {
@@ -384,15 +392,51 @@
 
                         const errorMsg = xhr.status === 404 ?
                             "Endpoint tidak ditemukan." :
-                            "Gagal mengambil acara hari ini.";
+                            "Gagal mengambil acara saat ini.";
                         toastr.error(errorMsg, 'Error');
                     }
                 });
             }
 
-            notifyTodaysEvents();
+            function deleteExpiredEvents() {
+                $.ajax({
+                    url: `${SITEURL}/current-events`,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        const now = new Date();
+
+                        data.forEach(event => {
+                            const end = new Date(event.end);
+                            if (now > end) {
+                                $.ajax({
+                                    url: `${SITEURL}/events/${event.id}`,   
+                                    type: "DELETE",
+                                    success: function() {
+                                        console.log(
+                                            `Event ${event.id} deleted successfully.`
+                                            );
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.log(
+                                            `Failed to delete event ${event.id}.`
+                                            );
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Failed to fetch events for deletion.");
+                    }
+                });
+            }
+
+            notifyCurrentEvents();
+            setInterval(deleteExpiredEvents, 60000);
         });
     </script>
+
 
 
 </body>

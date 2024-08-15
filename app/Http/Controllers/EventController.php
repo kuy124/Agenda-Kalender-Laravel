@@ -21,6 +21,32 @@ class EventController extends Controller
         return view('events.list', compact('events'));
     }
 
+    public function getCurrentEvents()
+    {
+        // Get the current date and time
+        $now = Carbon::now();
+
+        // Query for events that are currently ongoing
+        $events = Event::where('start', '<=', $now)
+            ->where('end', '>=', $now)
+            ->get();
+
+        // Return events as JSON
+        return response()->json($events);
+    }
+
+    public function deleteEvent($id)
+    {
+        $event = Event::find($id);
+
+        if ($event) {
+            $event->delete();
+            return response()->json(['message' => 'Event deleted successfully.'], 200);
+        } else {
+            return response()->json(['message' => 'Event not found.'], 404);
+        }
+    }
+
     public function listguest()
     {
         $events = Event::all();
