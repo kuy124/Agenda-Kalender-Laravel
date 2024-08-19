@@ -616,7 +616,9 @@
                         $('#sidebarEventDetails').html(`
                         `);
                         $('#updateEventSidebarBtn').hide().data('event', event);
-                        $('#Hidden').html('Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya')
+                        $('#Hidden').html(
+                            'Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya'
+                        )
                         displayMessage("Acara berhasil dihapus");
                     }
                 });
