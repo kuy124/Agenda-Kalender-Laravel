@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -40,12 +41,20 @@ class EventController extends Controller
         $event = Event::find($id);
 
         if ($event) {
+            $imagePath = public_path('images/' . $event->image);
+
             $event->delete();
-            return response()->json(['message' => 'Event deleted successfully.'], 200);
+
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+
+            return response()->json(['message' => 'Event and its image deleted successfully.'], 200);
         } else {
             return response()->json(['message' => 'Event not found.'], 404);
         }
     }
+
 
     public function listguest()
     {
@@ -134,7 +143,6 @@ class EventController extends Controller
         $event->category = $request->input('category');
 
         if ($request->hasFile('image')) {
-            // Delete old image
             if ($event->image) {
                 Storage::delete('public/images/' . $event->image);
             }

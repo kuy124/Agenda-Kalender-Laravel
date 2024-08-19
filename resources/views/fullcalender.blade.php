@@ -228,6 +228,7 @@
         <source src="{{ asset('background.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+    
     <div class="container-wrapper">
         <div class="container">
             <form action="{{ url('logout') }}" method="post">
