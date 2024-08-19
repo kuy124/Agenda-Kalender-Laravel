@@ -8,6 +8,7 @@
     <title>Daftar Agenda</title>
     <link rel="icon" type="image/png" href="https://img.pikbest.com/origin/09/27/06/70epIkbEsTkz9.png!sw800">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
         body {
@@ -135,6 +136,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -145,6 +147,7 @@
                 transform: translateY(-50px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -184,6 +187,30 @@
         <source src="{{ asset('background.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
+
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="eventModalLabel">
+                        <i class="fas fa-exclamation-triangle"></i> Konfirmasi Penghapusan
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="lead mb-4">Apakah yakin ingin menghapus data ini?</p>
+                    <i class="fas fa-trash-alt fa-4x text-danger"></i>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary btn-lg px-4" data-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-danger btn-lg px-4" id="removeEventBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container mt-4">
         <h1 class="mb-4">Daftar Agenda</h1>
@@ -238,25 +265,33 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function() {
             $('.end-date').each(function() {
                 var originalDate = $(this).data('date');
                 var date = new Date(originalDate);
-                date.setDate(date.getDate() - 1);
 
-                var formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
-                $(this).text(formattedDate);
+                if (!isNaN(date.getTime())) {
+                    date.setDate(date.getDate() - 1);
+
+                    var formattedDate = date.toISOString().split('T')[0];
+                    $(this).text(formattedDate);
+                } else {
+                    console.error("Invalid date:", originalDate);
+                }
             });
-
             $('.delete-btn').click(function() {
                 var eventId = $(this).data('id');
                 var row = $(this).closest('tr');
+                $('#eventModal').modal('show');
 
-                if (confirm('Anda yakin ingin menghapus acara ini?')) {
+                $('#removeEventBtn').click(function() {
+                    var event = $(this).data('event');
                     $.ajax({
                         url: '/events/' + eventId,
                         type: 'DELETE',
@@ -264,21 +299,19 @@
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            if (response.success) {
-                                row.remove();
-                                alert('Acara berhasil dihapus');
-                            } else {
-                                alert('Gagal menghapus acara');
-                            }
+                            row.remove();
+                            $('#eventModal').modal('hide');
+                            toastr.info('Acara berhasil dihapus');
                         },
                         error: function(xhr) {
-                            alert('Gagal menghapus acara');
+                            toastr.error('Gagal menghapus acara');
                         }
                     });
-                }
+                });
             });
         });
     </script>
+
 
 </body>
 
