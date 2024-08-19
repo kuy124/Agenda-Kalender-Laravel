@@ -16,6 +16,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
         #backgroundVideo {
@@ -38,9 +39,10 @@
         }
 
         h1 {
-            color: #fff;    
+            color: #fff;
             margin-bottom: 1rem;
             font-size: 1.5rem;
+            text-align: center;
         }
 
         .form-group {
@@ -54,7 +56,7 @@
         }
 
         .form-group input {
-            width: 383px;
+            width: 96.5%;
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: 4px;
@@ -88,6 +90,7 @@
             color: #fff;
             font-size: 1rem;
             cursor: pointer;
+            margin-top: 1rem;
         }
 
         .back:hover {
@@ -97,6 +100,33 @@
         .error-message {
             color: red;
             margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .login-container {
+                padding: 1rem;
+                max-width: 90%;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .form-group input {
+                padding: 0.4rem;
+            }
+
+            .form-group button {
+                padding: 0.4rem;
+                font-size: 0.875rem;
+            }
+
+            .back {
+                padding: 0.4rem;
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
@@ -111,7 +141,7 @@
         @if ($errors->any())
             <div class="error-message">
                 @foreach ($errors->all() as $error)
-                    <p>{{ $error }}</p>
+                    <p>Email atau kata sandi yang Anda masukkan tidak sesuai. Mohon periksa kembali dan coba lagi.</p>
                 @endforeach
             </div>
         @endif

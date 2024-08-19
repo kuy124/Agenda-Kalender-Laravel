@@ -22,6 +22,7 @@
 
         .container-wrapper {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             gap: 20px;
             margin: 40px auto;
@@ -199,6 +200,7 @@
         }
 
         .clock {
+            text-align: center;
             font-size: 3rem;
             font-weight: bold;
             padding: 20px;
@@ -220,6 +222,74 @@
         hr {
             border: 1px solid white;
         }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .container-wrapper {
+                flex-direction: row;
+                /* Horizontal layout on medium screens and up */
+            }
+
+            .container {
+                max-width: 70%;
+                margin: 30px auto;
+            }
+
+            .container-sidebar {
+                width: 30%;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+
+            #calendar {
+                margin-top: 30px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container-wrapper {
+                margin: 40px auto;
+                gap: 20px;
+            }
+
+            .container {
+                max-width: 80%;
+            }
+
+            .container-sidebar {
+                width: 35%;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 40px;
+            }
+
+            #calendar {
+                margin-top: 40px;
+            }
+        }
+
+        /* Adjustments for small devices */
+        @media (max-width: 576px) {
+            .container-sidebar {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 10px;
+            }
+
+            .btn {
+                font-size: 0.875rem;
+            }
+
+        }
     </style>
 </head>
 
@@ -238,6 +308,7 @@
         <div class="container-sidebar">
             <div class="clock" id="clock"></div>
             <h1>Detail Agenda</h1>
+            <p id="Hidden">Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya</p>
             <div id="sidebarEventDetails">
             </div>
         </div>
@@ -270,6 +341,7 @@
                         '</div>');
                 },
                 eventClick: function(event) {
+                    $('#Hidden').html('');
                     $('#sidebarEventDetails').html(`
                         <div class="details">
                             <h3>${event.title}</h3>
@@ -410,17 +482,17 @@
                             const end = new Date(event.end);
                             if (now > end) {
                                 $.ajax({
-                                    url: `${SITEURL}/events/${event.id}`,   
+                                    url: `${SITEURL}/events/${event.id}`,
                                     type: "DELETE",
                                     success: function() {
                                         console.log(
                                             `Event ${event.id} deleted successfully.`
-                                            );
+                                        );
                                     },
                                     error: function(xhr, status, error) {
                                         console.log(
                                             `Failed to delete event ${event.id}.`
-                                            );
+                                        );
                                     }
                                 });
                             }

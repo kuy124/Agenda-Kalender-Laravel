@@ -135,6 +135,7 @@
             from {
                 opacity: 0;
             }
+
             to {
                 opacity: 1;
             }
@@ -145,6 +146,7 @@
                 transform: translateY(-50px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -204,6 +206,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Judul</th>
+                        <th>Gambar</th>
                         <th>Deskripsi</th>
                         <th>Ruangan</th>
                         <th>Baju</th>
@@ -216,6 +219,14 @@
                         <tr>
                             <td>{{ $event->id }}</td>
                             <td>{{ $event->title }}</td>
+                            <td>
+                                @if ($event->image)
+                                    <img src="{{ asset('images/' . $event->image) }}" alt="Event Image"
+                                        style="width: 100px; height: auto;">
+                                @else
+                                    Tidak ada gambar
+                                @endif
+                            </td>
                             <td>{{ $event->description }}</td>
                             <td>{{ $event->location }}</td>
                             <td>{{ $event->category }}</td>

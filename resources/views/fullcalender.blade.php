@@ -22,6 +22,7 @@
 
         .container-wrapper {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             gap: 20px;
             margin: 40px auto;
@@ -199,6 +200,7 @@
         }
 
         .clock {
+            text-align: center;
             font-size: 3rem;
             font-weight: bold;
             padding: 20px;
@@ -219,6 +221,73 @@
 
         hr {
             border: 1px solid white;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .container-wrapper {
+                flex-direction: row;
+                /* Horizontal layout on medium screens and up */
+            }
+
+            .container {
+                max-width: 70%;
+                margin: 30px auto;
+            }
+
+            .container-sidebar {
+                width: 30%;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 30px;
+            }
+
+            #calendar {
+                margin-top: 30px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container-wrapper {
+                margin: 40px auto;
+                gap: 20px;
+            }
+
+            .container {
+                max-width: 80%;
+            }
+
+            .container-sidebar {
+                width: 35%;
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin-bottom: 40px;
+            }
+
+            #calendar {
+                margin-top: 40px;
+            }
+        }
+
+        /* Adjustments for small devices */
+        @media (max-width: 576px) {
+            .container-sidebar {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 10px;
+            }
+
+            .btn {
+                font-size: 0.875rem;
+            }
         }
     </style>
 </head>
