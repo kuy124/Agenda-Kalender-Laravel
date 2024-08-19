@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -49,11 +50,16 @@ class EventController extends Controller
                 File::delete($imagePath);
             }
 
+            DB::statement('SET @num := 0;');
+            DB::statement('UPDATE events SET id = @num := (@num + 1);');
+            DB::statement('ALTER TABLE events AUTO_INCREMENT = 1;');
+
             return response()->json(['message' => 'Event and its image deleted successfully.'], 200);
         } else {
             return response()->json(['message' => 'Event not found.'], 404);
         }
     }
+
 
 
     public function listguest()
@@ -118,6 +124,10 @@ class EventController extends Controller
         }
 
         $event->save();
+
+        DB::statement('SET @num := 0;');
+        DB::statement('UPDATE events SET id = @num := (@num + 1);');
+        DB::statement('ALTER TABLE events AUTO_INCREMENT = 1;');
 
         return response()->json($event);
     }

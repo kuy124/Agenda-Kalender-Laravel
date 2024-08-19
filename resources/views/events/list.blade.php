@@ -230,6 +230,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Gambar</th>
                         <th>Judul</th>
                         <th>Deskripsi</th>
                         <th>Ruangan</th>
@@ -243,6 +244,14 @@
                     @forelse($events as $event)
                         <tr>
                             <td>{{ $event->id }}</td>
+                            <td>
+                                @if ($event->image)
+                                    <img src="{{ asset('images/' . $event->image) }}" alt="Event Image"
+                                        style="width: 100px; height: auto;">
+                                @else
+                                    Tidak ada gambar
+                                @endif
+                            </td>
                             <td>{{ $event->title }}</td>
                             <td>{{ $event->description }}</td>
                             <td>{{ $event->location }}</td>
@@ -250,7 +259,7 @@
                             <td>{{ $event->start }}</td>
                             <td class="end-date" data-date="{{ $event->end }}">{{ $event->end }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $event->id }}">
+                                <button class="btn btn-danger btn-sm" data-id="{{ $event->id }}">
                                     <i class="fas fa-trash"></i> Hapus
                                 </button>
                             </td>
@@ -285,28 +294,43 @@
                     console.error("Invalid date:", originalDate);
                 }
             });
-            $('.delete-btn').click(function() {
-                var eventId = $(this).data('id');
-                var row = $(this).closest('tr');
-                $('#eventModal').modal('show');
 
-                $('#removeEventBtn').click(function() {
-                    var event = $(this).data('event');
-                    $.ajax({
-                        url: '/events/' + eventId,
-                        type: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            row.remove();
-                            $('#eventModal').modal('hide');
-                            toastr.info('Acara berhasil dihapus');
-                        },
-                        error: function(xhr) {
-                            toastr.error('Gagal menghapus acara');
-                        }
-                    });
+            $('.btn-danger').click(function() {
+                var eventId = $(this).data('id');
+                $('#eventModal').modal('show');
+                $('#removeEventBtn').data('id', eventId);
+            });
+
+            $('#removeEventBtn').click(function() {
+                var eventId = $(this).data('id');
+                var row = $('button[data-id="' + eventId + '"]').closest('tr');
+
+                $.ajax({
+                    url: '/events/' + eventId,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
+
+                        row.remove();
+                        $('#eventModal').modal('hide');
+                        toastr.error('Berhasil menghapus acara');
+                        location.reload();
+                    },
+                    error: function(xhr) {
+                        toastr.error('Gagal menghapus acara');
+                    }
                 });
             });
         });

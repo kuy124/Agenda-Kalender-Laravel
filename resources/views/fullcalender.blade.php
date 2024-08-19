@@ -228,7 +228,7 @@
         <source src="{{ asset('background.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    
+
     <div class="container-wrapper">
         <div class="container">
             <form action="{{ url('logout') }}" method="post">
@@ -241,6 +241,7 @@
         <div class="container-sidebar">
             <div class="clock" id="clock"></div>
             <h1>Detail Agenda</h1>
+            <p id="Hidden">Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya</p>
             <div id="sidebarEventDetails">
             </div>
             <p align="center">
@@ -363,6 +364,7 @@
                         '</div>');
                 },
                 eventClick: function(event) {
+                    $('#Hidden').html('');
                     $('#sidebarEventDetails').html(`
                         <div class="details">
                             <h3>${event.title}</h3>
@@ -611,6 +613,10 @@
                         calendar.fullCalendar('removeEvents');
                         calendar.fullCalendar('refetchEvents');
                         $('#eventModal').modal('hide');
+                        $('#sidebarEventDetails').html(`
+                        `);
+                        $('#updateEventSidebarBtn').hide().data('event', event);
+                        $('#Hidden').html('Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya')
                         displayMessage("Acara berhasil dihapus");
                     }
                 });
