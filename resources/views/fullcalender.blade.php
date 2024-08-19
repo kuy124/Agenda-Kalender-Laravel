@@ -213,7 +213,7 @@
         .details {
             overflow-y: auto;
             padding: 20px;
-            max-height: 450px;
+            max-height: 400px;
             margin-bottom: 10px;
             border-radius: 20px;
             background-color: rgba(255, 145, 0, 0.5);
