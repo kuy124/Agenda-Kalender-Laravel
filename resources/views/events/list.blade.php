@@ -325,7 +325,7 @@
 
                         row.remove();
                         $('#eventModal').modal('hide');
-                        toastr.error('Berhasil menghapus acara');
+                        toastr.success('Berhasil menghapus acara');
                         location.reload();
                     },
                     error: function(xhr) {
