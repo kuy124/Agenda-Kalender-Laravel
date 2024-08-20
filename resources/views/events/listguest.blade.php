@@ -207,7 +207,6 @@
                         <th>ID</th>
                         <th>Judul</th>
                         <th>Gambar</th>
-                        <th>Deskripsi</th>
                         <th>Ruangan</th>
                         <th>Baju</th>
                         <th>Tanggal Mulai</th>
@@ -227,7 +226,6 @@
                                     Tidak ada gambar
                                 @endif
                             </td>
-                            <td>{{ $event->description }}</td>
                             <td>{{ $event->location }}</td>
                             <td>{{ $event->category }}</td>
                             <td>{{ $event->start }}</td>

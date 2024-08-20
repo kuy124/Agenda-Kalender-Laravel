@@ -504,6 +504,21 @@
                             success: function(data) {
                                 calendar.fullCalendar('updateEvent', event);
                                 displayMessage("Acara berhasil diperbarui");
+                                $('#Hidden').html('');
+                                $('#sidebarEventDetails').html(`
+                                <div class="details">
+                                    <h3>${event.title}</h3>
+                                    <hr>
+                                    ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
+                                    <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
+                                    <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
+                                    <p><strong>Deskripsi:</strong> ${event.description}</p>
+                                    <p><strong>Ruangan:</strong> ${event.location}</p>
+                                    <p><strong>Baju:</strong> ${event.category}</p>
+                                </div>
+                            `);
+                                $('#updateEventSidebarBtn').show().data('event',
+                                    event);
                             },
                             error: function() {
                                 revertFunc();
@@ -680,17 +695,17 @@
 
                         // Update sidebar details for both add and update
                         $('#sidebarEventDetails').html(`
-                <div class="details">
-                    <h3>${eventData.title}</h3>
-                    <hr>
-                    ${eventData.image ? `<img src="${SITEURL}/images/${eventData.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
-                    <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
-                    <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
-                    <p><strong>Deskripsi:</strong> ${eventData.description}</p>
-                    <p><strong>Ruangan:</strong> ${eventData.location}</p>
-                    <p><strong>Baju:</strong> ${eventData.category}</p>
-                </div>
-            `);
+                            <div class="details">
+                                <h3>${eventData.title}</h3>
+                                <hr>
+                                ${eventData.image ? `<img src="${SITEURL}/images/${eventData.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
+                                <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
+                                <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
+                                <p><strong>Deskripsi:</strong> ${eventData.description}</p>
+                                <p><strong>Ruangan:</strong> ${eventData.location}</p>
+                                <p><strong>Baju:</strong> ${eventData.category}</p>
+                            </div>
+                        `);
                     },
                     error: function() {
                         toastr.options = {

@@ -232,7 +232,6 @@
                         <th>ID</th>
                         <th>Gambar</th>
                         <th>Judul</th>
-                        <th>Deskripsi</th>
                         <th>Ruangan</th>
                         <th>Baju</th>
                         <th>Tanggal Mulai</th>
@@ -253,7 +252,6 @@
                                 @endif
                             </td>
                             <td>{{ $event->title }}</td>
-                            <td>{{ $event->description }}</td>
                             <td>{{ $event->location }}</td>
                             <td>{{ $event->category }}</td>
                             <td>{{ $event->start }}</td>
