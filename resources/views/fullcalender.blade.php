@@ -583,8 +583,10 @@
                 var eventData;
                 var updateBtn = $(this).text() === 'Perbarui';
                 var formData = new FormData();
+                var url, method;
 
                 if (updateBtn) {
+                    // Update existing event
                     var event = $(this).data('event');
                     event.title = $('#eventTitle').val();
                     event.description = $('#eventDescription').val();
@@ -602,15 +604,10 @@
                         category: event.category,
                         _method: 'PUT'
                     };
-                    formData.append('id', event.id);
-                    formData.append('_method', 'PUT');
-                    formData.append('title', event.title);
-                    formData.append('start', event.start.format('YYYY-MM-DD'));
-                    formData.append('end', event.end ? event.end.format('YYYY-MM-DD') : null);
-                    formData.append('description', event.description);
-                    formData.append('location', event.location);
-                    formData.append('category', event.category);
+                    url = '/events/' + event.id;
+                    method = 'POST';
                 } else {
+                    // Add new event
                     eventData = {
                         title: $('#eventTitle').val(),
                         start: $('#eventStart').val(),
@@ -620,13 +617,19 @@
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
                     };
-                    formData.append('title', $('#eventTitle').val());
-                    formData.append('start', $('#eventStart').val());
-                    formData.append('end', $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day')
-                        .format('YYYY-MM-DD') : null);
-                    formData.append('description', $('#eventDescription').val());
-                    formData.append('location', $('#eventLocation').val());
-                    formData.append('category', $('#eventCategory').val());
+                    url = '/events'; // Endpoint for adding new events
+                    method = 'POST';
+                }
+
+                // Append data to formData
+                formData.append('title', eventData.title);
+                formData.append('start', eventData.start);
+                formData.append('end', eventData.end);
+                formData.append('description', eventData.description);
+                formData.append('location', eventData.location);
+                formData.append('category', eventData.category);
+                if (updateBtn) {
+                    formData.append('_method', 'PUT');
                 }
 
                 var imageFile = $('#eventImage')[0].files[0];
@@ -652,22 +655,59 @@
                 }
 
                 $.ajax({
-                    url: SITEURL + "/events",
+                    url: url,
                     data: formData,
-                    type: "POST",
+                    type: method,
                     processData: false,
                     contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function(data) {
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
                         $('#calendar').fullCalendar('refetchEvents');
                         $('#eventModal').modal('hide');
-                        displayMessage(updateBtn ? "Acara berhasil diperbarui" :
-                            "Acara berhasil ditambahkan");
+                        toastr.success("Acara berhasil diperbarui");
+
+                        // Update sidebar details for both add and update
+                        $('#sidebarEventDetails').html(`
+                <div class="details">
+                    <h3>${eventData.title}</h3>
+                    <hr>
+                    ${eventData.image ? `<img src="${SITEURL}/images/${eventData.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
+                    <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
+                    <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
+                    <p><strong>Deskripsi:</strong> ${eventData.description}</p>
+                    <p><strong>Ruangan:</strong> ${eventData.location}</p>
+                    <p><strong>Baju:</strong> ${eventData.category}</p>
+                </div>
+            `);
                     },
                     error: function() {
-                        showErrorPopup("Gagal menyimpan acara");
+                        toastr.options = {
+                            closeButton: true,
+                            progressBar: true,
+                            timeOut: 5000,
+                            extendedTimeOut: 1000,
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            preventDuplicates: true,
+                            newestOnTop: true,
+                        };
+                        toastr.error("Gagal memperbarui acara");
                     }
                 });
             });
+
 
             $('#removeEventBtn').click(function() {
                 var event = $(this).data('event');
