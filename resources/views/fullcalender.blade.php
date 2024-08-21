@@ -601,7 +601,6 @@
                 var url, method;
 
                 if (updateBtn) {
-                    // Update existing event
                     var event = $(this).data('event');
                     event.title = $('#eventTitle').val();
                     event.description = $('#eventDescription').val();
@@ -622,7 +621,6 @@
                     url = '/events/' + event.id;
                     method = 'POST';
                 } else {
-                    // Add new event
                     eventData = {
                         title: $('#eventTitle').val(),
                         start: $('#eventStart').val(),
@@ -632,11 +630,10 @@
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
                     };
-                    url = '/events'; // Endpoint for adding new events
+                    url = '/events'; 
                     method = 'POST';
                 }
 
-                // Append data to formData
                 formData.append('title', eventData.title);
                 formData.append('start', eventData.start);
                 formData.append('end', eventData.end);
@@ -693,7 +690,6 @@
                         $('#eventModal').modal('hide');
                         toastr.success("Acara berhasil diperbarui");
 
-                        // Update sidebar details for both add and update
                         $('#sidebarEventDetails').html(`
                             <div class="details">
                                 <h3>${eventData.title}</h3>
