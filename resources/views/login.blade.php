@@ -103,7 +103,6 @@
             text-align: center;
         }
 
-        /* Responsive Styles */
         @media (max-width: 600px) {
             .login-container {
                 padding: 1rem;
