@@ -576,7 +576,7 @@
             function hasOverlappingEvents(newEvent) {
                 var events = $('#calendar').fullCalendar('clientEvents');
                 var newEventStart = moment(newEvent.start);
-                var newEventEnd = moment(newEvent.end || newEvent.start).subtract(1, 'day');
+                var newEventEnd = moment(newEvent.end || newEvent.start);
 
                 for (var i = 0; i < events.length; i++) {
                     var event = events[i];
@@ -584,15 +584,16 @@
                     var eventEnd = moment(event.end || event.start).subtract(1, 'day');
 
                     if (event.id !== newEvent.id &&
-                        event.location === newEvent.location &&
-                        newEventStart.isBefore(eventEnd) &&
-                        newEventEnd.isAfter(eventStart) &&
-                        eventEnd.isAfter(moment())) {
-                        return true;
+                        event.location === newEvent.location) {
+
+                        if (newEventStart.isBefore(eventEnd) && newEventEnd.isAfter(eventStart)) {
+                            return true;
+                        }
                     }
                 }
                 return false;
             }
+
 
             $('#saveEventBtn').click(function() {
                 var eventData;
@@ -630,7 +631,7 @@
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
                     };
-                    url = '/events'; 
+                    url = '/events';
                     method = 'POST';
                 }
 
@@ -869,8 +870,42 @@
                 });
             }
 
+            function deleteExpiredEvents() {
+                $.ajax({
+                    url: `${SITEURL}/current-events`,
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        const now = new Date();
+
+                        data.forEach(event => {
+                            const end = new Date(event.end);
+                            if (now > end) {
+                                $.ajax({
+                                    url: `${SITEURL}/events/${event.id}`,
+                                    type: "DELETE",
+                                    success: function() {
+                                        console.log(
+                                            `Agenda ${event.id} Berhasil di hapus.`
+                                        );
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.log(
+                                            `Gagal menghapus agenda ${event.id}.`
+                                        );
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Failed to fetch events for deletion.");
+                    }
+                });
+            }
 
             notifyCurrentEvents();
+            setInterval(deleteExpiredEvents, 1000);
         });
     </script>
 

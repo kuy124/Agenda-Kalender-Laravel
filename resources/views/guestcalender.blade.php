@@ -486,12 +486,12 @@
                                     type: "DELETE",
                                     success: function() {
                                         console.log(
-                                            `Event ${event.id} deleted successfully.`
+                                            `Agenda ${event.id} Berhasil di hapus.`
                                         );
                                     },
                                     error: function(xhr, status, error) {
                                         console.log(
-                                            `Failed to delete event ${event.id}.`
+                                            `Gagal menghapus agenda ${event.id}.`
                                         );
                                     }
                                 });
@@ -505,7 +505,7 @@
             }
 
             notifyCurrentEvents();
-            setInterval(deleteExpiredEvents, 60000);
+            setInterval(deleteExpiredEvents, 1000);
         });
     </script>
 
