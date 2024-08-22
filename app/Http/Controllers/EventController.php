@@ -25,15 +25,12 @@ class EventController extends Controller
 
     public function getCurrentEvents()
     {
-        // Get the current date and time
         $now = Carbon::now();
 
-        // Query for events that are currently ongoing
         $events = Event::where('start', '<=', $now)
             ->where('end', '>=', $now)
             ->get();
 
-        // Return events as JSON
         return response()->json($events);
     }
 
@@ -105,7 +102,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $event = new Event();
