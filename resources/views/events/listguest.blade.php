@@ -251,7 +251,7 @@
                 var date = new Date(originalDate);
                 date.setDate(date.getDate() - 1);
 
-                var formattedDate = date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+                var formattedDate = date.toISOString().split('T')[0];
                 $(this).text(formattedDate);
             });
 

@@ -368,12 +368,12 @@
                         </div>
                         <div class="form-group">
                             <label for="eventImage">Gambar</label>
-                            <input type="file" class="form-control" id="eventImage">
+                            <input type="file" class="form-control" id="eventImage" accept=".jpg,.jpeg,.png,.gif,.webp">
                         </div>
                         <div class="form-group">
                             <label for="eventFile">Dokumen</label>
                             <input type="file" class="form-control" id="eventFile"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx">
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
                         </div>
                     </form>
                 </div>
@@ -699,7 +699,7 @@
                         $('#calendar').fullCalendar('refetchEvents');
                         $('#eventModal').modal('hide');
                         toastr.success("Acara berhasil diperbarui");
-
+                        $('#Hidden').html('');
                         $('#sidebarEventDetails').html(`
                             <div class="details">
                                 <h3>${eventData.title}</h3>
