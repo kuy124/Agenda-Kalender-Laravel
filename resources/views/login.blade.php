@@ -136,7 +136,7 @@
         Your browser does not support the video tag.
     </video>
     <div class="login-container">
-        <h1>Login</h1>
+        <h1>Masuk</h1>
         @if ($errors->any())
             <div class="error-message">
                 @foreach ($errors->all() as $error)
@@ -155,7 +155,7 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <button type="submit" class="button">Login</button>
+                <button type="submit" class="button">Masuk</button>
             </div>
         </form>
         <button class="button back"><a href="{{ url('') }}"

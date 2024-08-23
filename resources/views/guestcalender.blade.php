@@ -302,7 +302,7 @@
         <div class="container">
             <a href="{{ route('events.listguest') }}" class="btn btn-primary mb-3">Cari</a>
             <a href="{{ url('kontak') }}" class="btn btn-secondary mb-3">Kontak</a>
-            <a href="{{ url('login') }}" class="btn btn-warning mb-3">Log in</a>
+            <a href="{{ url('login') }}" class="btn btn-warning mb-3">Masuk</a>
             <div id="calendar" class="calendar"></div>
         </div>
         <div class="container-sidebar">
@@ -317,7 +317,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/locale/id.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
@@ -335,6 +336,7 @@
                 displayEventTime: false,
                 selectable: true,
                 selectHelper: true,
+                locale: 'id', // Set the locale to Indonesian
 
                 eventRender: function(event, element) {
                     element.find('.fc-title').append('<div class="fc-room">' + event.location +
@@ -342,16 +344,21 @@
                 },
                 eventClick: function(event) {
                     $('#Hidden').html('');
+                    let fileDownloadLink = event.file ?
+                        `<p align="center"><a style="text-decoration: none; color: white;" href="${SITEURL}/files/${event.file}" target="_blank"><button class="btn btn-success mt-2 ">Lihat Dokumen</button></a></p>` :
+                        '';
                     $('#sidebarEventDetails').html(`
                         <div class="details">
                             <h3>${event.title}</h3>
                             <hr>
-                            ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
+                            ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Gambar Acara" style="max-width: 100%;"/>` : ''}
+                            ${fileDownloadLink}
                             <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
                             <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
                             <p><strong>Ruangan:</strong> ${event.location}</p>
-                            <p><strong>Baju:</strong> ${event.category}</p>
+                            <p><strong>Kategori:</strong> ${event.category}</p>
+                            
                         </div>
                     `);
                     $('#updateEventSidebarBtn').show().data('event', event);
@@ -369,7 +376,7 @@
                     preventDuplicates: true,
                     newestOnTop: true,
                 };
-                toastr.error(message, "Error");
+                toastr.error(message, "Kesalahan");
             }
 
             function updateClock() {
@@ -470,47 +477,10 @@
                 });
             }
 
-            function deleteExpiredEvents() {
-                $.ajax({
-                    url: `${SITEURL}/current-events`,
-                    type: "GET",
-                    dataType: "json",
-                    success: function(data) {
-                        const now = new Date();
-
-                        data.forEach(event => {
-                            const end = new Date(event.end);
-                            if (now > end) {
-                                $.ajax({
-                                    url: `${SITEURL}/events/${event.id}`,
-                                    type: "DELETE",
-                                    success: function() {
-                                        console.log(
-                                            `Agenda ${event.id} Berhasil di hapus.`
-                                        );
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.log(
-                                            `Gagal menghapus agenda ${event.id}.`
-                                        );
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("Failed to fetch events for deletion.");
-                    }
-                });
-            }
-
             notifyCurrentEvents();
-            setInterval(deleteExpiredEvents, 1000);
         });
     </script>
-
-
-
 </body>
+
 
 </html>

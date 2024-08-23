@@ -40,6 +40,7 @@ class EventController extends Controller
 
         if ($event) {
             $imagePath = public_path('images/' . $event->image);
+            $filePath = public_path('files/' . $event->file);
 
             $event->delete();
 
@@ -47,15 +48,20 @@ class EventController extends Controller
                 File::delete($imagePath);
             }
 
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+            }
+
             DB::statement('SET @num := 0;');
             DB::statement('UPDATE events SET id = @num := (@num + 1);');
             DB::statement('ALTER TABLE events AUTO_INCREMENT = 1;');
 
-            return response()->json(['message' => 'Event and its image deleted successfully.'], 200);
+            return response()->json(['message' => 'Event, its image, and file deleted successfully.'], 200);
         } else {
             return response()->json(['message' => 'Event not found.'], 404);
         }
     }
+
 
 
 
@@ -66,6 +72,18 @@ class EventController extends Controller
     }
 
     public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $events = Event::where('title', 'like', "%$query%")
+            ->orWhere('description', 'like', "%$query%")
+            ->orWhere('location', 'like', "%$query%")
+            ->orWhere('category', 'like', "%$query%")
+            ->get();
+
+        return view('events.list', ['events' => $events]);
+    }
+
+    public function searchuser(Request $request)
     {
         $query = $request->input('query');
         $events = Event::where('title', 'like', "%$query%")
@@ -103,6 +121,7 @@ class EventController extends Controller
             'location' => 'nullable|string',
             'category' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480', // Max 20MB
         ]);
 
         $event = new Event();
@@ -118,6 +137,13 @@ class EventController extends Controller
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $event->image = $imageName;
+        }
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('files'), $fileName);
+            $event->file = $fileName;
         }
 
         $event->save();
@@ -139,6 +165,7 @@ class EventController extends Controller
             'location' => 'nullable|string',
             'category' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
+            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
         ]);
 
         $event = Event::findOrFail($id);
@@ -151,13 +178,22 @@ class EventController extends Controller
 
         if ($request->hasFile('image')) {
             if ($event->image) {
-                Storage::delete('public/images/' . $event->image);
+                File::delete(public_path('images/' . $event->image));
             }
-
             $image = $request->file('image');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $event->image = $imageName;
+        }
+
+        if ($request->hasFile('file')) {
+            if ($event->file) {
+                File::delete(public_path('files/' . $event->file));
+            }
+            $file = $request->file('file');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('files'), $fileName);
+            $event->file = $fileName;
         }
 
         $event->save();
