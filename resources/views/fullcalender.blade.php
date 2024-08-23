@@ -515,21 +515,13 @@
                             success: function(data) {
                                 calendar.fullCalendar('updateEvent', event);
                                 displayMessage("Acara berhasil diperbarui");
-                                $('#Hidden').html('');
+                                $('#calendar').fullCalendar('refetchEvents');
+                                $('#eventModal').modal('hide');
+                                toastr.success("Acara berhasil diperbarui");
+                                $('#Hidden').html(`Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya`)
                                 $('#sidebarEventDetails').html(`
-                                    <div class="details">
-                                        <h3>${eventData.title}</h3>
-                                        <hr>
-                                        ${data.image ? `<img src="${SITEURL}/images/${data.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
-                                        ${data.file ? `<p align="center"><a href="${SITEURL}/files/${data.file}" target="_blank"><button class="btn btn-success mt-2">Download File</button></a></p>` : ''}
-                                        <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
-                                        <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
-                                        <p><strong>Deskripsi:</strong> ${eventData.description}</p>
-                                        <p><strong>Ruangan:</strong> ${eventData.location}</p>
-                                        <p><strong>Baju:</strong> ${eventData.category}</p>
-                                    </div>
                                 `);
-                                $('#updateEventSidebarBtn').show().data('event',
+                                $('#updateEventSidebarBtn').hide().data('event',
                                     event);
                             },
                             error: function() {
@@ -713,7 +705,7 @@
                                 <h3>${eventData.title}</h3>
                                 <hr>
                                 ${data.image ? `<img src="${SITEURL}/images/${data.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
-                                ${data.file ? `<p align="center"><a href="${SITEURL}/files/${data.file}" target="_blank"><button class="btn btn-success mt-2">Download File</button></a></p>` : ''}
+                                ${data.file ? `<p align="center"><a href="${SITEURL}/files/${data.file}" target="_blank"><button class="btn btn-success mt-2">Lihat Dokumen</button></a></p>` : ''}
                                 <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
                                 <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
                                 <p><strong>Deskripsi:</strong> ${eventData.description}</p>

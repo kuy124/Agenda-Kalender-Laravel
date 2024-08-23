@@ -21,6 +21,7 @@ Route::get('/events/list', [EventController::class, 'list'])->name('events.list'
 Route::get('/events/today', [EventController::class, 'getTodaysEvents']);
 Route::get('today', [EventController::class, 'TodayNow']);
 Route::get('/events/searchuser', [EventController::class, 'searchuser'])->name('events.searchuser');
+Route::get('/events/search', [EventController::class, 'search'])->name('events.search');
 Route::get('/events/listguest', [EventController::class, 'listguest'])->name('events.listguest');
 Route::get('/UserEvents', [EventController::class, 'indexUser'])->name('events.indexUser');
 Route::get('events/{id}', [EventController::class, 'show'])->name('events.show');

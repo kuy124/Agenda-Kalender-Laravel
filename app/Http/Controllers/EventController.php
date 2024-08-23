@@ -92,7 +92,7 @@ class EventController extends Controller
             ->orWhere('category', 'like', "%$query%")
             ->get();
 
-        return view('events.list', ['events' => $events]);
+        return view('events.listguest', ['events' => $events]);
     }
 
     public function show($id)
