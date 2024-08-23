@@ -231,6 +231,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Gambar</th>
+                        <th>Dokumen</th>
                         <th>Judul</th>
                         <th>Ruangan</th>
                         <th>Baju</th>
@@ -249,6 +250,16 @@
                                         style="width: 100px; height: auto;">
                                 @else
                                     Tidak ada gambar
+                                @endif
+                            </td>
+                            <td>
+                                @if ($event->file)
+                                    <a style="decoration: none; color: white;"
+                                        href="{{ asset('files/' . $event->file) }}" target="_blank">
+                                        <button class="btn btn-success mt-2">Lihat Dokumen</button>
+                                    </a>
+                                @else
+                                    Tidak ada file
                                 @endif
                             </td>
                             <td>{{ $event->title }}</td>

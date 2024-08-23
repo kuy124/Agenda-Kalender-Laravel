@@ -90,7 +90,6 @@
             color: #fff;
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 1rem;
         }
 
         .back:hover {
@@ -151,15 +150,15 @@
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">Sandi</label>
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
                 <button type="submit" class="button">Masuk</button>
             </div>
         </form>
-        <button class="button back"><a href="{{ url('') }}"
-                style="text-decoration: none; color:#fff;">Kembali</a></button>
+        <a href="{{ url('') }}" style="text-decoration: none; color:#fff;"><button
+                class="button back">Kembali</button></a>
     </div>
 </body>
 

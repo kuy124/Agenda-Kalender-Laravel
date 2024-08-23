@@ -205,8 +205,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Judul</th>
                         <th>Gambar</th>
+                        <th>Dokumen</th>
+                        <th>Judul</th>
                         <th>Ruangan</th>
                         <th>Baju</th>
                         <th>Tanggal Mulai</th>
@@ -217,7 +218,6 @@
                     @forelse($events as $event)
                         <tr>
                             <td>{{ $event->id }}</td>
-                            <td>{{ $event->title }}</td>
                             <td>
                                 @if ($event->image)
                                     <img src="{{ asset('images/' . $event->image) }}" alt="Event Image"
@@ -226,6 +226,17 @@
                                     Tidak ada gambar
                                 @endif
                             </td>
+                            <td>
+                                @if ($event->file)
+                                    <a style="decoration: none; color: white;"
+                                        href="{{ asset('files/' . $event->file) }}" target="_blank">
+                                        <button class="btn btn-success mt-2">Lihat Dokumen</button>
+                                    </a>
+                                @else
+                                    Tidak ada file
+                                @endif
+                            </td>
+                            <td>{{ $event->title }}</td>
                             <td>{{ $event->location }}</td>
                             <td>{{ $event->category }}</td>
                             <td>{{ $event->start }}</td>

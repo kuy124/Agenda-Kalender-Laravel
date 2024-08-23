@@ -357,7 +357,7 @@
                             <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
                             <p><strong>Ruangan:</strong> ${event.location}</p>
-                            <p><strong>Kategori:</strong> ${event.category}</p>
+                            <p><strong>Baju:</strong> ${event.category}</p>
                             
                         </div>
                     `);
