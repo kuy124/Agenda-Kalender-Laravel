@@ -336,7 +336,7 @@
                 displayEventTime: false,
                 selectable: true,
                 selectHelper: true,
-                locale: 'id', // Set the locale to Indonesian
+                locale: 'id',
 
                 eventRender: function(event, element) {
                     element.find('.fc-title').append('<div class="fc-room">' + event.location +
