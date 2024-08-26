@@ -368,7 +368,7 @@
                         </div>
                         <div class="form-group">
                             <label for="eventImage">Gambar</label>
-                            <input type="file" class="form-control" id="eventImage" accept=".jpg,.jpeg,.png,.gif,.webp,.mp4">
+                            <input type="file" class="form-control" id="eventImage" accept=".jpg,.jpeg,.png,.gif,.webp">
                         </div>
                         <div class="form-group">
                             <label for="eventFile">Dokumen</label>

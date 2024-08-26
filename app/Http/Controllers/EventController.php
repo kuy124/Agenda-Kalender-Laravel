@@ -120,7 +120,7 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp,mp4,mp3|max:10240',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
             'file' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:20480',
         ]);
 
