@@ -164,8 +164,8 @@ class EventController extends Controller
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
-            'file' => 'nullable|mimes:pdf,doc,docx|max:20480',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            'file' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:20480',
         ]);
 
         $event = Event::findOrFail($id);
