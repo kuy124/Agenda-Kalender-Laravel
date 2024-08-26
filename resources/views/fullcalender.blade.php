@@ -372,8 +372,7 @@
                         </div>
                         <div class="form-group">
                             <label for="eventFile">Dokumen</label>
-                            <input type="file" class="form-control" id="eventFile"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+                            <input type="file" class="form-control" id="eventFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
                         </div>
                     </form>
                 </div>
