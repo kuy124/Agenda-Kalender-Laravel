@@ -265,8 +265,9 @@
                             <td>{{ $event->title }}</td>
                             <td>{{ $event->location }}</td>
                             <td>{{ $event->category }}</td>
-                            <td>{{ $event->start }}</td>
-                            <td class="end-date" data-date="{{ $event->end }}">{{ $event->end }}</td>
+                            <td>{{ $event->start }} {{ $event->start_time }}</td>
+                            <td class="end-date" data-date="{{ $event->end }}" data-time="{{ $event->end_time }}">
+                                {{ $event->end }} {{ $event->end_time }}</td>
                             <td>
                                 <button class="btn btn-danger btn-sm" data-id="{{ $event->id }}">
                                     <i class="fas fa-trash"></i> Hapus
@@ -292,13 +293,14 @@
         $(document).ready(function() {
             $('.end-date').each(function() {
                 var originalDate = $(this).data('date');
+                var time = $(this).data('time');
                 var date = new Date(originalDate);
 
                 if (!isNaN(date.getTime())) {
                     date.setDate(date.getDate() - 1);
 
                     var formattedDate = date.toISOString().split('T')[0];
-                    $(this).text(formattedDate);
+                    $(this).text(formattedDate + ' ' + time);
                 } else {
                     console.error("Invalid date:", originalDate);
                 }

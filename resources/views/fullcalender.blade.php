@@ -343,6 +343,14 @@
                             <input type="text" class="form-control" id="eventEnd" readonly>
                         </div>
                         <div class="form-group">
+                            <label for="eventStart">Mulai (Waktu)</label>
+                            <input type="time" class="form-control" id="eventStartTime">
+                        </div>
+                        <div class="form-group">
+                            <label for="eventEnd">Selesai (Waktu)</label>
+                            <input type="time" class="form-control" id="eventEndTime">
+                        </div>
+                        <div class="form-group">
                             <label for="eventDescription">Deskripsi</label>
                             <textarea class="form-control" id="eventDescription" rows="3" placeholder="Masukkan Deskripsi"></textarea>
                         </div>
@@ -364,15 +372,18 @@
                         </div>
                         <div class="form-group">
                             <label for="eventCategory">Baju</label>
-                            <input type="text" class="form-control" id="eventCategory" placeholder="Masukkan Baju">
+                            <input type="text" class="form-control" id="eventCategory"
+                                placeholder="Masukkan Baju">
                         </div>
                         <div class="form-group">
                             <label for="eventImage">Gambar</label>
-                            <input type="file" class="form-control" id="eventImage" accept=".jpg,.jpeg,.png,.gif,.webp">
+                            <input type="file" class="form-control" id="eventImage"
+                                accept=".jpg,.jpeg,.png,.gif,.webp">
                         </div>
                         <div class="form-group">
                             <label for="eventFile">Dokumen</label>
-                            <input type="file" class="form-control" id="eventFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+                            <input type="file" class="form-control" id="eventFile"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
                         </div>
                     </form>
                 </div>
@@ -447,8 +458,8 @@
                             <hr>
                             ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
                             ${fileDownloadLink}
-                            <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')}</p>
-                            <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')}</p>
+                            <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')} ${event.start_time}</p>
+                    <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
                             <p><strong>Ruangan:</strong> ${event.location}</p>
                             <p><strong>Baju:</strong> ${event.category}</p>
@@ -517,7 +528,9 @@
                                 $('#calendar').fullCalendar('refetchEvents');
                                 $('#eventModal').modal('hide');
                                 toastr.success("Acara berhasil diperbarui");
-                                $('#Hidden').html(`Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya`)
+                                $('#Hidden').html(
+                                    `Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya`
+                                )
                                 $('#sidebarEventDetails').html(`
                                 `);
                                 $('#updateEventSidebarBtn').hide().data('event',
@@ -599,7 +612,6 @@
 
 
             $('#saveEventBtn').click(function() {
-                var eventData;
                 var updateBtn = $(this).text() === 'Perbarui';
                 var formData = new FormData();
                 var url, method;
@@ -610,43 +622,42 @@
                     event.description = $('#eventDescription').val();
                     event.location = $('#eventLocation').val();
                     event.category = $('#eventCategory').val();
-                    event.start = moment($('#eventStart').val());
-                    event.end = moment($('#eventEnd').val()).add(1, 'day');
-                    eventData = {
-                        id: event.id,
-                        title: event.title,
-                        start: event.start.format('YYYY-MM-DD'),
-                        end: event.end ? event.end.format('YYYY-MM-DD') : null,
-                        description: event.description,
-                        location: event.location,
-                        category: event.category,
-                        _method: 'PUT'
-                    };
+                    event.start = moment($('#eventStart').val()).format('YYYY-MM-DD');
+                    event.end = $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
+                        'YYYY-MM-DD') : null;
+                    event.start_time = $('#eventStartTime').val(); 
+                    event.end_time = $('#eventEndTime').val(); 
+
                     url = '/events/' + event.id;
                     method = 'POST';
+                    formData.append('_method', 'PUT');
                 } else {
-                    eventData = {
+                    event = {
                         title: $('#eventTitle').val(),
-                        start: $('#eventStart').val(),
+                        start: moment($('#eventStart').val()).format('YYYY-MM-DD'),
                         end: $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
                             'YYYY-MM-DD') : null,
+                        start_time: $('#eventStartTime').val() ||
+                        '',
+                        end_time: $('#eventEndTime').val() ||
+                        '',
                         description: $('#eventDescription').val(),
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
                     };
+
                     url = '/events';
                     method = 'POST';
                 }
 
-                formData.append('title', eventData.title);
-                formData.append('start', eventData.start);
-                formData.append('end', eventData.end);
-                formData.append('description', eventData.description);
-                formData.append('location', eventData.location);
-                formData.append('category', eventData.category);
-                if (updateBtn) {
-                    formData.append('_method', 'PUT');
-                }
+                formData.append('title', event.title);
+                formData.append('start', event.start);
+                formData.append('end', event.end);
+                formData.append('start_time', event.start_time);
+                formData.append('end_time', event.end_time); 
+                formData.append('description', event.description);
+                formData.append('location', event.location);
+                formData.append('category', event.category);
 
                 var imageFile = $('#eventImage')[0].files[0];
                 if (imageFile) {
@@ -658,18 +669,7 @@
                     formData.append('file', fileFile);
                 }
 
-                if (hasOverlappingEvents(eventData)) {
-                    toastr.options = {
-                        closeButton: true,
-                        progressBar: true,
-                        timeOut: 5000,
-                        extendedTimeOut: 1000,
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        preventDuplicates: true,
-                        newestOnTop: true,
-                    };
-
+                if (hasOverlappingEvents(event)) {
                     toastr.error(
                         'Acara tidak bisa ditambahkan. Ruangan sudah terpakai pada waktu tersebut.');
                     return;
@@ -685,51 +685,34 @@
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
-                        toastr.options = {
-                            closeButton: true,
-                            progressBar: true,
-                            timeOut: 5000,
-                            extendedTimeOut: 1000,
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            preventDuplicates: true,
-                            newestOnTop: true,
-                        };
-                        $('#calendar').fullCalendar('refetchEvents');
-                        $('#eventModal').modal('hide');
                         toastr.success("Acara berhasil diperbarui");
-                        $('#Hidden').html('');
+                        $('#calendar').fullCalendar('refetchEvents');
+                        $('#Hidden').html('')
+                        $('#eventModal').modal('hide');
+
                         $('#sidebarEventDetails').html(`
                             <div class="details">
-                                <h3>${eventData.title}</h3>
+                                <h3>${event.title}</h3>
                                 <hr>
                                 ${data.image ? `<img src="${SITEURL}/images/${data.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
                                 ${data.file ? `<p align="center"><a href="${SITEURL}/files/${data.file}" target="_blank"><button class="btn btn-success mt-2">Lihat Dokumen</button></a></p>` : ''}
-                                <p><strong>Mulai:</strong> ${moment(eventData.start).format('YYYY-MM-DD')}</p>
-                                <p><strong>Selesai:</strong> ${eventData.end ? moment(eventData.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(eventData.start).format('YYYY-MM-DD')}</p>
-                                <p><strong>Deskripsi:</strong> ${eventData.description}</p>
-                                <p><strong>Ruangan:</strong> ${eventData.location}</p>
-                                <p><strong>Baju:</strong> ${eventData.category}</p>
+                                <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')} ${event.start_time}</p>
+                                <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
+                                <p><strong>Deskripsi:</strong> ${event.description}</p>
+                                <p><strong>Ruangan:</strong> ${event.location}</p>
+                                <p><strong>Baju:</strong> ${event.category}</p>
                             </div>
                         `);
-                        $('#updateEventSidebarBtn').show().data('event',
-                            event);
+
+                        $('#updateEventSidebarBtn').show().data('event', event);
                     },
                     error: function() {
-                        toastr.options = {
-                            closeButton: true,
-                            progressBar: true,
-                            timeOut: 5000,
-                            extendedTimeOut: 1000,
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            preventDuplicates: true,
-                            newestOnTop: true,
-                        };
                         toastr.error("Gagal memperbarui acara");
                     }
                 });
             });
+
+
 
 
 

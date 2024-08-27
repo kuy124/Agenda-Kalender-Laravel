@@ -116,7 +116,9 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date',
+            'start_time' => 'required|string|max:5', // Expecting a time string like "HH:mm"
             'end' => 'nullable|date',
+            'end_time' => 'nullable|string|max:5',   // Nullable time string
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
@@ -127,30 +129,28 @@ class EventController extends Controller
         $event = new Event();
         $event->title = $request->input('title');
         $event->start = $request->input('start');
+        $event->start_time = $request->input('start_time'); // Store as varchar
         $event->end = $request->input('end');
+        $event->end_time = $request->input('end_time');     // Store as varchar
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->category = $request->input('category');
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $event->image = $imageName;
         }
 
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('files'), $fileName);
             $event->file = $fileName;
         }
 
         $event->save();
-
-        DB::statement('SET @num := 0;');
-        DB::statement('UPDATE events SET id = @num := (@num + 1);');
-        DB::statement('ALTER TABLE events AUTO_INCREMENT = 1;');
 
         return response()->json($event);
     }
@@ -160,7 +160,9 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date',
+            'start_time' => 'nullable|string|max:5',
             'end' => 'nullable|date',
+            'end_time' => 'nullable|string|max:5',
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
@@ -169,9 +171,12 @@ class EventController extends Controller
         ]);
 
         $event = Event::findOrFail($id);
+
         $event->title = $request->input('title');
         $event->start = $request->input('start');
+        $event->start_time = $request->input('start_time') ?: $event->start_time; 
         $event->end = $request->input('end');
+        $event->end_time = $request->input('end_time') ?: $event->end_time; 
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->category = $request->input('category');
@@ -181,7 +186,7 @@ class EventController extends Controller
                 File::delete(public_path('images/' . $event->image));
             }
             $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $event->image = $imageName;
         }
@@ -191,7 +196,7 @@ class EventController extends Controller
                 File::delete(public_path('files/' . $event->file));
             }
             $file = $request->file('file');
-            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('files'), $fileName);
             $event->file = $fileName;
         }
