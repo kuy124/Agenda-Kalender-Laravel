@@ -687,34 +687,14 @@
                     success: function(data) {
                         toastr.success("Acara berhasil diperbarui");
                         $('#calendar').fullCalendar('refetchEvents');
-                        $('#Hidden').html('')
+                        $('#Hidden').html('Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya')
                         $('#eventModal').modal('hide');
-
-                        $('#sidebarEventDetails').html(`
-                            <div class="details">
-                                <h3>${event.title}</h3>
-                                <hr>
-                                ${data.image ? `<img src="${SITEURL}/images/${data.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
-                                ${data.file ? `<p align="center"><a href="${SITEURL}/files/${data.file}" target="_blank"><button class="btn btn-success mt-2">Lihat Dokumen</button></a></p>` : ''}
-                                <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')} ${event.start_time}</p>
-                                <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
-                                <p><strong>Deskripsi:</strong> ${event.description}</p>
-                                <p><strong>Ruangan:</strong> ${event.location}</p>
-                                <p><strong>Baju:</strong> ${event.category}</p>
-                            </div>
-                        `);
-
-                        $('#updateEventSidebarBtn').show().data('event', event);
                     },
                     error: function() {
                         toastr.error("Gagal memperbarui acara");
                     }
                 });
             });
-
-
-
-
 
             $('#removeEventBtn').click(function() {
                 var event = $(this).data('event');
