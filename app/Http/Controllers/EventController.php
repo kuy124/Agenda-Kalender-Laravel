@@ -129,9 +129,9 @@ class EventController extends Controller
         $event = new Event();
         $event->title = $request->input('title');
         $event->start = $request->input('start');
-        $event->start_time = $request->input('start_time'); // Store as varchar
+        $event->start_time = $request->input('start_time');
         $event->end = $request->input('end');
-        $event->end_time = $request->input('end_time');     // Store as varchar
+        $event->end_time = $request->input('end_time');
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->category = $request->input('category');
@@ -174,9 +174,9 @@ class EventController extends Controller
 
         $event->title = $request->input('title');
         $event->start = $request->input('start');
-        $event->start_time = $request->input('start_time') ?: $event->start_time; 
+        $event->start_time = $request->input('start_time') ?: $event->start_time;
         $event->end = $request->input('end');
-        $event->end_time = $request->input('end_time') ?: $event->end_time; 
+        $event->end_time = $request->input('end_time') ?: $event->end_time;
         $event->description = $request->input('description');
         $event->location = $request->input('location');
         $event->category = $request->input('category');

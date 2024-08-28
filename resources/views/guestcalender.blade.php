@@ -430,9 +430,9 @@
                             toastr.options = {
                                 closeButton: true,
                                 progressBar: true,
-                                timeOut: 0,
-                                extendedTimeOut: 0,
-                                tapToDismiss: false,
+                                timeOut: 5000,
+                                extendedTimeOut: 1000,
+                                tapToDismiss: true,
                                 positionClass: 'toast-top-right',
                                 preventDuplicates: true,
                                 newestOnTop: true,
@@ -478,6 +478,7 @@
             }
 
             notifyCurrentEvents();
+
         });
     </script>
 </body>

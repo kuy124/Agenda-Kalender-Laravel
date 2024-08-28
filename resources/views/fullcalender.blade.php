@@ -162,16 +162,10 @@
 
         #calendar .fc-event:hover {
             transform: scale(1.05);
-            background-color: #391b00;
         }
 
         #calendar .fc-day-grid-event {
             border-radius: 5px;
-        }
-
-        .fc-event {
-            background-color: #291a00 !important;
-            border: 1px solid #291a00 !important;
         }
 
         .fc-event .fc-title {
@@ -186,8 +180,6 @@
 
         .fc-content {
             text-align: center;
-            background-color: #582900;
-            border: 1px solid #391b00 !important;
         }
 
         .fc-today {
@@ -443,7 +435,33 @@
                         'YYYY-MM-DD'));
                 },
                 eventRender: function(event, element) {
-                    element.find('.fc-title').append('<div class="fc-room">' + event.location +
+                    event.allDay = event.allDay === 'true';
+
+                    var colors = {
+                        past: '#8a0000', // Red for past events
+                        present: '#582900', // Green for current events
+                        future: '#047400' // Blue for future events
+                    };
+
+                    var currentDate = new Date();
+
+                    var eventStartDate = new Date(event.start);
+                    var eventEndDate = new Date(event.end || event.start);
+
+                    var status;
+                    if (eventEndDate < currentDate) {
+                        status = 'past';
+                    } else if (eventStartDate <= currentDate && eventEndDate >= currentDate) {
+                        status = 'present';
+                    } else {
+                        status = 'future';
+                    }
+
+                    var color = colors[status];
+                    element.css('background-color', color);
+                    element.css('border-color', color);
+
+                    element.find('.fc-title').append('<div class="fc-room">' + (event.location || '') +
                         '</div>');
                 },
                 eventClick: function(event) {
@@ -532,8 +550,6 @@
                                 )
                                 $('#sidebarEventDetails').html(`
                                 `);
-                                $('#updateEventSidebarBtn').hide().data('event',
-                                    event);
                             },
                             error: function() {
                                 revertFunc();
@@ -624,8 +640,8 @@
                     event.start = moment($('#eventStart').val()).format('YYYY-MM-DD');
                     event.end = $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
                         'YYYY-MM-DD') : null;
-                    event.start_time = $('#eventStartTime').val(); 
-                    event.end_time = $('#eventEndTime').val(); 
+                    event.start_time = $('#eventStartTime').val();
+                    event.end_time = $('#eventEndTime').val();
 
                     url = '/events/' + event.id;
                     method = 'POST';
@@ -637,9 +653,9 @@
                         end: $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
                             'YYYY-MM-DD') : null,
                         start_time: $('#eventStartTime').val() ||
-                        '',
+                            '',
                         end_time: $('#eventEndTime').val() ||
-                        '',
+                            '',
                         description: $('#eventDescription').val(),
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
@@ -653,7 +669,7 @@
                 formData.append('start', event.start);
                 formData.append('end', event.end);
                 formData.append('start_time', event.start_time);
-                formData.append('end_time', event.end_time); 
+                formData.append('end_time', event.end_time);
                 formData.append('description', event.description);
                 formData.append('location', event.location);
                 formData.append('category', event.category);
@@ -686,8 +702,12 @@
                     success: function(data) {
                         toastr.success("Acara berhasil diperbarui");
                         $('#calendar').fullCalendar('refetchEvents');
-                        $('#Hidden').html('Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya')
+                        $('#Hidden').html(
+                            'Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya'
+                        );
+                        $('#sidebarEventDetails').html('')
                         $('#eventModal').modal('hide');
+                        $('#updateEventSidebarBtn').show().data('event', event).hide();
                     },
                     error: function() {
                         toastr.error("Gagal memperbarui acara");
@@ -797,9 +817,9 @@
                             toastr.options = {
                                 closeButton: true,
                                 progressBar: true,
-                                timeOut: 0,
-                                extendedTimeOut: 0,
-                                tapToDismiss: false,
+                                timeOut: 5000,
+                                extendedTimeOut: 1000,
+                                tapToDismiss: true,
                                 positionClass: 'toast-top-right',
                                 preventDuplicates: true,
                                 newestOnTop: true,
@@ -845,6 +865,8 @@
             }
 
             notifyCurrentEvents();
+
+
         });
     </script>
 
