@@ -459,11 +459,10 @@
                             ${event.image ? `<img src="${SITEURL}/images/${event.image}" alt="Event Image" style="max-width: 100%;"/>` : ''}
                             ${fileDownloadLink}
                             <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')} ${event.start_time}</p>
-                    <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
+                            <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
                             <p><strong>Ruangan:</strong> ${event.location}</p>
                             <p><strong>Baju:</strong> ${event.category}</p>
-                            
                         </div>
                     `);
                     $('#updateEventSidebarBtn').show().data('event', event);
