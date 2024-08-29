@@ -216,11 +216,9 @@
             border: 1px solid white;
         }
 
-        /* Responsive Styles */
         @media (min-width: 768px) {
             .container-wrapper {
                 flex-direction: row;
-                /* Horizontal layout on medium screens and up */
             }
 
             .container {
@@ -268,7 +266,6 @@
             }
         }
 
-        /* Adjustments for small devices */
         @media (max-width: 576px) {
             .container-sidebar {
                 padding: 15px;
