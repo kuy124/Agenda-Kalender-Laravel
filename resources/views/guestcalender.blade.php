@@ -169,11 +169,6 @@
             border-radius: 5px;
         }
 
-        .fc-event {
-            background-color: #291a00 !important;
-            border: 1px solid #291a00 !important;
-        }
-
         .fc-event .fc-title {
             display: block;
             white-space: normal;
@@ -186,8 +181,6 @@
 
         .fc-content {
             text-align: center;
-            background-color: #582900;
-            border: 1px solid #391b00 !important;
         }
 
         .fc-today {
@@ -339,7 +332,33 @@
                 locale: 'id',
 
                 eventRender: function(event, element) {
-                    element.find('.fc-title').append('<div class="fc-room">' + event.location +
+                    event.allDay = event.allDay === 'true';
+
+                    var colors = {
+                        past: '#8a0000',
+                        present: '#582900',
+                        future: '#047400'
+                    };
+
+                    var currentDate = new Date();
+
+                    var eventStartDate = new Date(event.start);
+                    var eventEndDate = new Date(event.end || event.start);
+
+                    var status;
+                    if (eventEndDate < currentDate) {
+                        status = 'past';
+                    } else if (eventStartDate <= currentDate && eventEndDate >= currentDate) {
+                        status = 'present';
+                    } else {
+                        status = 'future';
+                    }
+
+                    var color = colors[status];
+                    element.css('background-color', color);
+                    element.css('border-color', color);
+
+                    element.find('.fc-title').append('<div class="fc-room">' + (event.location || '') +
                         '</div>');
                 },
                 eventClick: function(event) {

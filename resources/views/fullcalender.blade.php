@@ -440,7 +440,7 @@
                     var colors = {
                         past: '#8a0000',
                         present: '#582900',
-                        future: '#047400' 
+                        future: '#047400'
                     };
 
                     var currentDate = new Date();
@@ -631,31 +631,40 @@
                 var formData = new FormData();
                 var url, method;
 
+                var startDate = $('#eventStart').val();
+                var endDate = $('#eventEnd').val();
+                var startTime = $('#eventStartTime').val();
+                var endTime = $('#eventEndTime').val();
+
+                if (startDate === endDate) {
+                    if (startTime && endTime && endTime <= startTime) {
+                        toastr.error(
+                            'Waktu Selesai harus lebih besar dari Waktu Mulai!');
+                        return;
+                    }
+                }
+
                 if (updateBtn) {
                     var event = $(this).data('event');
                     event.title = $('#eventTitle').val();
                     event.description = $('#eventDescription').val();
                     event.location = $('#eventLocation').val();
                     event.category = $('#eventCategory').val();
-                    event.start = moment($('#eventStart').val()).format('YYYY-MM-DD');
-                    event.end = $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
-                        'YYYY-MM-DD') : null;
-                    event.start_time = $('#eventStartTime').val();
-                    event.end_time = $('#eventEndTime').val();
+                    event.start = moment(startDate).format('YYYY-MM-DD');
+                    event.end = endDate ? moment(endDate).add(1, 'day').format('YYYY-MM-DD') : null;
+                    event.start_time = startTime;
+                    event.end_time = endTime;
 
                     url = '/events/' + event.id;
                     method = 'POST';
                     formData.append('_method', 'PUT');
                 } else {
-                    event = {
+                    var event = {
                         title: $('#eventTitle').val(),
-                        start: moment($('#eventStart').val()).format('YYYY-MM-DD'),
-                        end: $('#eventEnd').val() ? moment($('#eventEnd').val()).add(1, 'day').format(
-                            'YYYY-MM-DD') : null,
-                        start_time: $('#eventStartTime').val() ||
-                            '',
-                        end_time: $('#eventEndTime').val() ||
-                            '',
+                        start: moment(startDate).format('YYYY-MM-DD'),
+                        end: endDate ? moment(endDate).add(1, 'day').format('YYYY-MM-DD') : null,
+                        start_time: startTime || '',
+                        end_time: endTime || '',
                         description: $('#eventDescription').val(),
                         location: $('#eventLocation').val(),
                         category: $('#eventCategory').val()
@@ -704,8 +713,8 @@
                         $('#calendar').fullCalendar('refetchEvents');
                         $('#Hidden').html(
                             'Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya'
-                        );
-                        $('#sidebarEventDetails').html('')
+                            );
+                        $('#sidebarEventDetails').html('');
                         $('#eventModal').modal('hide');
                         $('#updateEventSidebarBtn').show().data('event', event).hide();
                     },
@@ -714,6 +723,7 @@
                     }
                 });
             });
+
 
             $('#removeEventBtn').click(function() {
                 var event = $(this).data('event');
