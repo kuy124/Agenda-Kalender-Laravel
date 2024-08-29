@@ -438,9 +438,9 @@
                     event.allDay = event.allDay === 'true';
 
                     var colors = {
-                        past: '#8a0000', // Red for past events
-                        present: '#582900', // Green for current events
-                        future: '#047400' // Blue for future events
+                        past: '#8a0000',
+                        present: '#582900',
+                        future: '#047400' 
                     };
 
                     var currentDate = new Date();
