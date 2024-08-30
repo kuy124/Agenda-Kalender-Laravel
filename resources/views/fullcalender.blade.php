@@ -347,14 +347,14 @@
                             <textarea class="form-control" id="eventDescription" rows="3" placeholder="Masukkan Deskripsi"></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="eventLocation">Ruangan</label>
-                            <input type="text" class="form-control" id="eventLocation">
+                            <label for="eventLocation">Tempat</label>
+                            <input type="text" class="form-control" id="eventLocation"
+                                placeholder="Masukkan Tempat">
                             </input>
                         </div>
                         <div class="form-group">
                             <label for="eventCategory">Baju</label>
-                            <input type="text" class="form-control" id="eventCategory"
-                                placeholder="Masukkan Baju">
+                            <input type="text" class="form-control" id="eventCategory" placeholder="Masukkan Baju">
                         </div>
                         <div class="form-group">
                             <label for="eventImage">Gambar</label>
@@ -414,7 +414,7 @@
                             preventDuplicates: true,
                             newestOnTop: true,
                         };
-                        toastr.error('Anda tidak bisa memesan ruangan untuk tanggal sebelum hari ini.');
+                        toastr.error('Anda tidak bisa memesan agenda untuk tanggal sebelum hari ini.');
                         calendar.fullCalendar('unselect');
                         return;
                     }
@@ -468,7 +468,7 @@
                             <p><strong>Mulai:</strong> ${moment(event.start).format('YYYY-MM-DD')} ${event.start_time}</p>
                             <p><strong>Selesai:</strong> ${event.end ? moment(event.end).subtract(1, 'day').format('YYYY-MM-DD') : moment(event.start).format('YYYY-MM-DD')} ${event.end_time}</p>
                             <p><strong>Deskripsi:</strong> ${event.description}</p>
-                            <p><strong>Ruangan:</strong> ${event.location}</p>
+                            <p><strong>Tempat:</strong> ${event.location}</p>
                             <p><strong>Baju:</strong> ${event.category}</p>
                         </div>
                     `);
@@ -534,7 +534,7 @@
             $('#eventModal').on('show.bs.modal', function(e) {
                 var event = $(e.relatedTarget).data('event');
                 if (event) {
-                    $('#eventModalLabel').text('Edit Acara');
+                    $('#eventModalLabel').text('Ubah Acara');
                     $('#eventId').val(event.id);
                     $('#eventTitle').val(event.title);
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
@@ -560,7 +560,7 @@
                 var event = $(this).data('event');
                 if (event) {
                     $('#eventModal').modal('show');
-                    $('#eventModalLabel').text('Edit Acara');
+                    $('#eventModalLabel').text('Ubah Acara');
                     $('#eventId').val(event.id);
                     $('#eventTitle').val(event.title);
                     $('#eventStart').val(moment(event.start).format('YYYY-MM-DD'));
@@ -657,7 +657,7 @@
                         $('#calendar').fullCalendar('refetchEvents');
                         $('#Hidden').html(
                             'Silakan klik salah satu agenda untuk melihat rincian dan detail lengkapnya'
-                            );
+                        );
                         $('#sidebarEventDetails').html('');
                         $('#eventModal').modal('hide');
                         $('#updateEventSidebarBtn').show().data('event', event).hide();
