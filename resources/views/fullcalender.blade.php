@@ -348,19 +348,8 @@
                         </div>
                         <div class="form-group">
                             <label for="eventLocation">Ruangan</label>
-                            <select class="form-control" id="eventLocation">
-                                <option value="">Pilih Ruangan</option>
-                                <option value="Ruangan 1">Ruangan 1</option>
-                                <option value="Ruangan 2">Ruangan 2</option>
-                                <option value="Ruangan 3">Ruangan 3</option>
-                                <option value="Ruangan 4">Ruangan 4</option>
-                                <option value="Ruangan 5">Ruangan 5</option>
-                                <option value="Ruangan 6">Ruangan 6</option>
-                                <option value="Ruangan 7">Ruangan 7</option>
-                                <option value="Ruangan 8">Ruangan 8</option>
-                                <option value="Ruangan 9">Ruangan 9</option>
-                                <option value="Ruangan 10">Ruangan 10</option>
-                            </select>
+                            <input type="text" class="form-control" id="eventLocation">
+                            </input>
                         </div>
                         <div class="form-group">
                             <label for="eventCategory">Baju</label>
@@ -515,24 +504,6 @@
                         _method: 'PUT'
                     };
 
-                    if (hasOverlappingEvents(updatedEvent)) {
-                        toastr.options = {
-                            closeButton: true,
-                            progressBar: true,
-                            timeOut: 5000,
-                            extendedTimeOut: 1000,
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            preventDuplicates: true,
-                            newestOnTop: true,
-                        };
-                        toastr.error(
-                            'Acara tidak bisa dipindahkan. Ruangan sudah terpakai pada waktu tersebut.'
-                        );
-                        revertFunc();
-                        return;
-                    }
-
                     clearTimeout(window.dragTimeout);
                     window.dragTimeout = setTimeout(function() {
                         $.ajax({
@@ -604,27 +575,6 @@
                 }
             });
 
-            function hasOverlappingEvents(newEvent) {
-                var events = $('#calendar').fullCalendar('clientEvents');
-                var newEventStart = moment(newEvent.start);
-                var newEventEnd = moment(newEvent.end || newEvent.start);
-
-                for (var i = 0; i < events.length; i++) {
-                    var event = events[i];
-                    var eventStart = moment(event.start);
-                    var eventEnd = moment(event.end || event.start).subtract(1, 'day');
-
-                    if (event.id !== newEvent.id &&
-                        event.location === newEvent.location) {
-
-                        if (newEventStart.isBefore(eventEnd) && newEventEnd.isAfter(eventStart)) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-
 
             $('#saveEventBtn').click(function() {
                 var updateBtn = $(this).text() === 'Perbarui';
@@ -691,12 +641,6 @@
                 var fileFile = $('#eventFile')[0].files[0];
                 if (fileFile) {
                     formData.append('file', fileFile);
-                }
-
-                if (hasOverlappingEvents(event)) {
-                    toastr.error(
-                        'Acara tidak bisa ditambahkan. Ruangan sudah terpakai pada waktu tersebut.');
-                    return;
                 }
 
                 $.ajax({
