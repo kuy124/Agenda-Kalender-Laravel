@@ -13,4 +13,4 @@
 <p>2. Drag dari tanggal satu sampai tanggal yang lain untuk membuat agenda multi hari</p>
 <p>3. Masuk ke halaman admin dengan menggunakan :</p>
 <p>Username : admin@admin.admin</p>
-<p>Password : kalender gamer</p>
+<p>Password : kalendergamer</p>
