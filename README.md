@@ -1,4 +1,4 @@
-<p align="center">Projek Kalender</p>
+<h1 align="center">Projek Kalender</h1>
 <p>Cara Install :</p>
 <p>1. Download Laragon</p>
 <p>2. Taruh projek ini di dalam laragon\www\</p>
