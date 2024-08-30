@@ -116,9 +116,9 @@ class EventController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date',
-            'start_time' => 'required|string|max:5', // Expecting a time string like "HH:mm"
+            'start_time' => 'required|string|max:5',
             'end' => 'nullable|date',
-            'end_time' => 'nullable|string|max:5',   // Nullable time string
+            'end_time' => 'nullable|string|max:5',
             'description' => 'required|string',
             'location' => 'nullable|string',
             'category' => 'nullable|string',
