@@ -11,6 +11,7 @@
 <p>Cara Menggunakan Projek Kalender :</p>
 <p>1. Klik salah satu tanggal untuk membuat agenda (Harus masuk menjadi admin)</p>
 <p>2. Drag dari tanggal satu sampai tanggal yang lain untuk membuat agenda multi hari (Harus masuk menjadi admin)</p>
+<p>3. Bisa menghapus agenda melalui search event (Harus masuk menjadi admin. Jika user hanya bisa lihat saja)</p>
 <p>3. Masuk ke halaman admin dengan menggunakan :</p>
 <p>Email : admin@admin.admin</p>
 <p>Password : kalendergamer</p>
