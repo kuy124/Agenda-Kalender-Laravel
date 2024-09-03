@@ -5,7 +5,8 @@
 <p>3. Buka aplikasi Laragon dan Start All</p>
 <p>4. Klik Terminal dan ketik "code agenda" tanpa kutip</p>
 <p>5. Buka terminal di visual studio code dan ketik "php artisan migrate" tanpa kutip</p>
-<p>6. Ketika sudah selesai migrate, bisa ketik "php artisan serve" tanpa kutip untuk menjalankan projeknya</p>
+<p>6. Ketik "php artisan db:seed --class=MembersTableSeeder" tanpa kutip</p>
+<p>7. Ketika sudah selesai migrate, bisa ketik "php artisan serve" tanpa kutip untuk menjalankan projeknya</p>
 <hr>
 
 <p>Cara Menggunakan Projek Kalender :</p>
